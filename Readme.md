@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Дмитрий Щеклеин](https://up.htmlacademy.ru/ecmascript/18/user/160701).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Зубов](https://htmlacademy.ru/profile/id42701).
 
 ---
 
