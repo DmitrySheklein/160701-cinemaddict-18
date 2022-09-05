@@ -1,4 +1,4 @@
-import { createElement } from "./render";
+import { createElement } from '../render';
 
 const createProfileTemplate = () => `
 <section class="header__profile profile">

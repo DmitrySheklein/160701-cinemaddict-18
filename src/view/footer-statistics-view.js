@@ -1,10 +1,11 @@
-import { createElement } from "./render";
+import { createElement } from '../render';
 
-const createFilmsContainerTemplate = () => `<section class="films"></section>`;
+const createFooterStatisticsTemplate = () => `<p>130 291 movies inside</p>
+`;
 
-export default class FilmsContainer {
+export default class FooterStatisticsView {
   getTemplate() {
-    return createFilmsContainerTemplate();
+    return createFooterStatisticsTemplate();
   }
   getElement() {
     if (!this.element) {
