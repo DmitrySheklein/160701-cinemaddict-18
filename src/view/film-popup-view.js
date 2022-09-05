@@ -171,6 +171,7 @@ export default class FilmsPopup {
   getTemplate() {
     return createFilmsPopupTemplate();
   }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());

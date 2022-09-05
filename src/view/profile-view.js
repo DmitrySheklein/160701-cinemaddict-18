@@ -11,6 +11,7 @@ export default class ProfileView {
   getTemplate() {
     return createProfileTemplate();
   }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());

@@ -12,7 +12,7 @@ export default class FilmsPresenter {
     .getElement()
     .querySelector('.films-list__container');
 
-  init = filmsContainer => {
+  init = (filmsContainer) => {
     this.filmsContainer = filmsContainer;
     render(this.filmsContainerComponent, this.filmsContainer);
     render(this.filmsListComponent, this.filmsContainerComponent.getElement());

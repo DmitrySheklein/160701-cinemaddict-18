@@ -1,12 +1,13 @@
 import { createElement } from '../render';
 
 const createFilmsShowMoreBtnTemplate = () =>
-  `<button class="films-list__show-more">Show more</button>`;
+  '<button class="films-list__show-more">Show more</button>';
 
 export default class FilmsShowMoreBtn {
   getTemplate() {
     return createFilmsShowMoreBtnTemplate();
   }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());

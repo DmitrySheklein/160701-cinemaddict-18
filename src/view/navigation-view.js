@@ -13,6 +13,7 @@ export default class NavigationView {
   getTemplate() {
     return createNavigationTemplate();
   }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());

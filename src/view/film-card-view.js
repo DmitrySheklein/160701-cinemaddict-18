@@ -25,6 +25,7 @@ export default class FilmsCard {
   getTemplate() {
     return createFilmsCardTemplate();
   }
+
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
