@@ -21,4 +21,6 @@ render(new SortView(), siteMainElement);
 filmsPresenter.init(siteMainElement);
 
 render(new FooterStatisticsView(), siteFooterStatistics);
-render(new FilmsPopup(), siteBodyElement);
+// render(new FilmsPopup(), siteBodyElement);
+// import { generateFilmCard } from './mock/film';
+// console.dir(generateFilmCard());
