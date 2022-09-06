@@ -12,9 +12,7 @@ const siteHeaderElement = document.querySelector('.header');
 const siteFooterElement = document.querySelector('.footer');
 
 const filmsPresenter = new FilmsPresenter();
-const siteFooterStatistics = siteFooterElement.querySelector(
-  '.footer__statistics'
-);
+const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
 render(new ProfileView(), siteHeaderElement);
 render(new NavigationView(), siteMainElement);
