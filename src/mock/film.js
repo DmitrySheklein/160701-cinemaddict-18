@@ -9,7 +9,7 @@ const generateFilmCard = () => ({
   filmInfo: {
     title: Random.itemFromArray(titles),
     alternativeTitle: Random.itemFromArray(titles),
-    img: Random.itemFromArray(images),
+    imgSrc: Random.itemFromArray(images),
     ratio: Random.float(0, 10, 1),
     year: Random.int(1900, 2022),
     runtime: Random.int(30, 120),
