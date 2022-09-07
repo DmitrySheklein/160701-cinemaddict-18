@@ -22,5 +22,5 @@ filmsPresenter.init(siteMainElement);
 
 render(new FooterStatisticsView(), siteFooterStatistics);
 // render(new FilmsPopup(), siteBodyElement);
-// import { generateFilmCard } from './mock/film';
-// console.dir(generateFilmCard());
+import { generateFilmCard } from './mock/film';
+console.dir(generateFilmCard());

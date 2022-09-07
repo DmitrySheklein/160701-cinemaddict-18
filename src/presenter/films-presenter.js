@@ -3,8 +3,8 @@ import FilmsContainer from '../view/films-container-view';
 import FilmsList from '../view/films-list-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import FilmsCard from '../view/film-card-view';
+import { FILM_CARD_COUNT } from '../const';
 
-const FILM_CARD_COUNT = 5;
 export default class FilmsPresenter {
   filmsContainerComponent = new FilmsContainer();
   filmsListComponent = new FilmsList();
@@ -17,7 +17,7 @@ export default class FilmsPresenter {
     render(this.filmsContainerComponent, this.filmsContainer);
     render(this.filmsListComponent, this.filmsContainerComponent.getElement());
     Array.from({ length: FILM_CARD_COUNT }).forEach(() =>
-      render(new FilmsCard(), this.filmsListContainerComponent)
+      render(new FilmsCard(), this.filmsListContainerComponent),
     );
     render(new FilmsShowMoreBtn(), this.filmsListComponent.getElement());
   };

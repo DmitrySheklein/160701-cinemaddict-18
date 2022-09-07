@@ -1,0 +1,68 @@
+const titles = [
+  'The Green Mile',
+  'The Shawshank Redemption',
+  'Forrest Gump',
+  'The Lord of the Rings: The Return of the King',
+  'Pulp Fiction',
+  'Intouchables',
+  'Interstellar',
+  'Coco',
+  'Back to the Future',
+  'The Lion King',
+  'The Dark Knight',
+  'Sen to Chihiro no kamikakushi',
+  'Fight Club',
+  'Gladiator',
+  'WALL·E',
+  'Inception',
+  'Shrek',
+];
+const images = [
+  '/public/images/posters/made-for-each-other.png',
+  '/public/images/posters/popeye-meets-sinbad.png',
+  '/public/images/posters/sagebrush-trail.jpg',
+  '/public/images/posters/santa-claus-conquers-the-martians.jpg',
+  '/public/images/posters/the-dance-of-life.jpg',
+  '/public/images/posters/the-great-flamarion.jpg',
+  '/public/images/posters/the-man-with-the-golden-arm.jpg',
+];
+
+const description = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Cras aliquet varius magna, non porta ligula feugiat eget.',
+  'Fusce tristique felis at fermentum pharetra.',
+  'Aliquam id orci ut lectus varius viverra.',
+  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
+  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
+  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
+  'Sed sed nisi sed augue convallis suscipit in sed felis.',
+  'Aliquam erat volutpat.',
+  'Nunc fermentum tortor ac porta dapibus.',
+  'In rutrum ac purus sit amet tempus.',
+];
+
+const genre = [
+  'Comedy',
+  'Fantasy',
+  'Crime',
+  'Drama',
+  'Music',
+  'Adventure',
+  'History',
+  'Thriller',
+  'Animation',
+  'Family',
+  'Mystery',
+  'Biography',
+  'Action',
+  'Film-Noir',
+  'Romance',
+  'Sci-Fi',
+  'War',
+  'Western',
+  'Horror',
+  'Musical',
+  'Sport',
+];
+
+export { titles, images, description, genre };
