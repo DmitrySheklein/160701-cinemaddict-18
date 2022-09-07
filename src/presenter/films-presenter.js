@@ -12,12 +12,13 @@ export default class FilmsPresenter {
     .getElement()
     .querySelector('.films-list__container');
 
-  init = (filmsContainer) => {
+  init = (filmsContainer, filmsModel) => {
     this.filmsContainer = filmsContainer;
+    this.films = [...filmsModel.getFilms()];
     render(this.filmsContainerComponent, this.filmsContainer);
     render(this.filmsListComponent, this.filmsContainerComponent.getElement());
-    Array.from({ length: FILM_CARD_COUNT }).forEach(() =>
-      render(new FilmsCard(), this.filmsListContainerComponent),
+    Array.from({ length: FILM_CARD_COUNT }).forEach((_el, i) =>
+      render(new FilmsCard(this.films[i]), this.filmsListContainerComponent),
     );
     render(new FilmsShowMoreBtn(), this.filmsListComponent.getElement());
   };
