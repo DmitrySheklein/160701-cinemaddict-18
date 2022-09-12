@@ -1,19 +1,14 @@
 import { Random, ArrayEnhanced } from '../util';
+import { emotions, description, names, surnames } from './const';
 
-const commentEmotions = ['smile', 'sleeping', 'puke', 'angry'];
-/*
-Текст комментария;
-Эмоция;
-Автор комментария;
-Дата комментария;
-Кнопка удаления.
-*/
-const generateComment = () => ({
-  id: '',
-  text: '',
-  emotion: Random.itemFromArray(commentEmotions),
-  author: '',
-  date: '2019-05-11T16:12:32.554Z',
+const generateCommentText = () => new ArrayEnhanced(...description).randomLength().join(' ');
+const generatePerson = () => `${Random.itemFromArray(names)} ${Random.itemFromArray(surnames)}`;
+const generateComment = (id = 0) => ({
+  id: id,
+  text: generateCommentText(),
+  emotion: Random.itemFromArray(emotions),
+  author: generatePerson(),
+  date: Random.date(),
 });
 
 export { generateComment };

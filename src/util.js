@@ -33,6 +33,10 @@ class Random {
   static itemFromArray(array) {
     return array[Random.int(0, array.length - 1)];
   }
+
+  static date() {
+    return dayjs(new Date(new Date() - Math.random() * 1e12)).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  }
 }
 
 class ArrayEnhanced extends Array {
