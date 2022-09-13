@@ -66,7 +66,7 @@ const genre = [
 ];
 const AgeRating = {
   MIN: 0,
-  MAX: 5,
+  MAX: 18,
 };
 const FilmRating = {
   MIN: 0,

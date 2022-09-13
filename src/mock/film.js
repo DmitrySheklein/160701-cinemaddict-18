@@ -12,7 +12,7 @@ import {
 } from './const';
 
 const generateGenre = () => new ArrayEnhanced(...genre).randomLength();
-const generateDescription = () => new ArrayEnhanced(...description).randomLength();
+const generateDescription = () => new ArrayEnhanced(...description).randomLength().join(' ');
 const generatePerson = () => `${Random.itemFromArray(names)} ${Random.itemFromArray(surnames)}`;
 const generateBoolean = () => Boolean(Random.int(0, 1));
 const generateFilmCard = () => ({

@@ -64,5 +64,6 @@ class ArrayEnhanced extends Array {
   }
 }
 const humanizeFilmDurationDate = (minute) => dayjs({ minute }).format('H[h] mm[m]');
+const humanizeFilmReleaseDate = (date) => dayjs(date).format('M MMM YYYY');
 
-export { Random, ArrayEnhanced, humanizeFilmDurationDate };
+export { Random, ArrayEnhanced, humanizeFilmDurationDate, humanizeFilmReleaseDate };
