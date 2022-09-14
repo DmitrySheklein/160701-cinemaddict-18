@@ -1,7 +1,25 @@
 import { createElement } from '../render';
 import { humanizeFilmDurationDate, humanizeFilmReleaseDate } from '../util';
 
-const createFilmsPopupInfoTemplate = (filmInfo) => {
+const createInfoControlsTemplate = (userDetails) => {
+  const { watchlist, alreadyWatched, favorite } = userDetails;
+  const activeClass = 'film-details__control-button--active';
+
+  return `
+  <section class="film-details__controls">
+    <button type="button" class="film-details__control-button film-details__control-button--watchlist ${
+      watchlist ? activeClass : ''
+    }" id="watchlist" name="watchlist">Add to watchlist</button>
+    <button type="button" class="film-details__control-button film-details__control-button--watched ${
+      alreadyWatched ? activeClass : ''
+    }" id="watched" name="watched">Already watched</button>
+    <button type="button" class="film-details__control-button film-details__control-button--favorite ${
+      favorite ? activeClass : ''
+    }" id="favorite" name="favorite">Add to favorites</button>
+  </section>
+  `;
+};
+const createInfoTemplate = (filmInfo) => {
   const {
     title,
     alternativeTitle,
@@ -16,7 +34,7 @@ const createFilmsPopupInfoTemplate = (filmInfo) => {
     genre,
     release: { date: releaseDate, releaseCountry },
   } = filmInfo;
-  console.log(genre, releaseCountry);
+
   return `
   <div class="film-details__info-wrap">
   <div class="film-details__poster">
@@ -77,20 +95,17 @@ const createFilmsPopupInfoTemplate = (filmInfo) => {
 </div>
   `;
 };
-const createFilmsPopupTemplate = ({ filmInfo }) => `
+
+const createFilmsPopupTemplate = ({ filmInfo, userDetails }) => `
 <section class="film-details">
   <div class="film-details__inner">
     <div class="film-details__top-container">
       <div class="film-details__close">
         <button class="film-details__close-btn" type="button">close</button>
       </div>
-      ${createFilmsPopupInfoTemplate(filmInfo)}
+      ${createInfoTemplate(filmInfo)}
 
-      <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
-      </section>
+      ${createInfoControlsTemplate(userDetails)}
     </div>
 
     <div class="film-details__bottom-container">
