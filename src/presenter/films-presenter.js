@@ -4,7 +4,6 @@ import FilmsList from '../view/films-list-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import FilmsCard from '../view/film-card-view';
 import FilmsPopup from '../view/film-popup-view';
-import { FILM_CARD_COUNT } from '../const';
 
 export default class FilmsPresenter {
   siteBodyElement = document.body;
@@ -16,14 +15,16 @@ export default class FilmsPresenter {
 
   init = (filmsContainer, filmsModel, commentsModel) => {
     this.filmsContainer = filmsContainer;
-    this.films = [...filmsModel.getFilms()];
-    this.comments = [...commentsModel.getComments()];
+    this.films = [...filmsModel.get()];
+    this.commentsModel = commentsModel;
+
     render(this.filmsContainerComponent, this.filmsContainer);
     render(this.filmsListComponent, this.filmsContainerComponent.getElement());
-    Array.from({ length: FILM_CARD_COUNT }).forEach((_el, i) =>
-      render(new FilmsCard(this.films[i]), this.filmsListContainerComponent),
-    );
+    this.films.forEach((film) => render(new FilmsCard(film), this.filmsListContainerComponent));
     render(new FilmsShowMoreBtn(), this.filmsListComponent.getElement());
-    render(new FilmsPopup(this.films[0]), this.siteBodyElement);
+
+    const filmItem = this.films[0];
+    const comments = this.commentsModel.get(filmItem);
+    render(new FilmsPopup(filmItem, comments), this.siteBodyElement);
   };
 }

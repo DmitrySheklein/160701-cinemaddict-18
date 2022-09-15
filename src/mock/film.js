@@ -1,4 +1,5 @@
 import { Random, ArrayEnhanced } from '../util';
+import { FILM_CARD_COUNT, MAX_COMMENTS_COUNT } from './const';
 import {
   titles,
   description,
@@ -9,22 +10,24 @@ import {
   surnames,
   AgeRating,
   FilmRating,
+  generatePerson,
 } from './const';
 
 const generateGenre = () => new ArrayEnhanced(...genre).randomLength();
 const generateDescription = () => new ArrayEnhanced(...description).randomLength().join(' ');
-const generatePerson = () => `${Random.itemFromArray(names)} ${Random.itemFromArray(surnames)}`;
+const generatePersons = () =>
+  Array.from({ length: Random.int(1, 5) }, generatePerson.bind(null, names, surnames));
 const generateBoolean = () => Boolean(Random.int(0, 1));
+
 const generateFilmCard = () => ({
-  id: 0,
   filmInfo: {
     title: Random.itemFromArray(titles),
     alternativeTitle: Random.itemFromArray(titles),
     imgSrc: Random.itemFromArray(images),
     ageRating: Random.int(AgeRating.MIN, AgeRating.MAX),
-    director: generatePerson(),
-    writers: Array.from({ length: Random.int(1, 5) }, generatePerson),
-    actors: Array.from({ length: Random.int(1, 5) }, generatePerson),
+    director: generatePerson(names, surnames),
+    writers: generatePersons(),
+    actors: generatePersons(),
     totalRating: Random.float(FilmRating.MIN, FilmRating.MAX, 1),
     year: Random.int(1900, 2022),
     runtime: Random.int(30, 120),
@@ -35,7 +38,6 @@ const generateFilmCard = () => ({
       releaseCountry: Random.itemFromArray(countries).name,
     },
   },
-  comments: Array.from({ length: Random.int(0, 10) }, (_el, i) => i),
   userDetails: {
     watchlist: generateBoolean(),
     alreadyWatched: generateBoolean(),
@@ -44,4 +46,23 @@ const generateFilmCard = () => ({
   },
 });
 
-export { generateFilmCard };
+const generateFilms = () => {
+  const films = Array.from({ length: FILM_CARD_COUNT }, generateFilmCard);
+  let totalCommentCount = 0;
+
+  return films.map((film, index) => {
+    const hasComments = Random.int(0, 1);
+    const filmsCommentCount = hasComments ? Random.int(1, MAX_COMMENTS_COUNT) : 0;
+    totalCommentCount += filmsCommentCount;
+
+    return {
+      ...film,
+      id: String(index + 1),
+      comments: Array.from({ length: filmsCommentCount }, (_value, commentIndex) =>
+        String(totalCommentCount - commentIndex),
+      ),
+    };
+  });
+};
+
+export { generateFilms };

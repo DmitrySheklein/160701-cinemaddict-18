@@ -12,7 +12,7 @@ const siteHeaderElement = document.querySelector('.header');
 const siteFooterElement = document.querySelector('.footer');
 
 const filmsModel = new FilmsModel();
-const commentsModel = new CommentsModel(5);
+const commentsModel = new CommentsModel(filmsModel);
 const filmsPresenter = new FilmsPresenter();
 const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
@@ -23,8 +23,3 @@ render(new SortView(), siteMainElement);
 filmsPresenter.init(siteMainElement, filmsModel, commentsModel);
 
 render(new FooterStatisticsView(), siteFooterStatistics);
-
-// import { generateFilmCard } from './mock/film';
-// import { generateComment } from './mock/comments';
-// console.dir(generateComment());
-// console.log(generateFilmCard());

@@ -31,11 +31,14 @@ class Random {
   }
 
   static itemFromArray(array) {
+    if (!Array.isArray(array)) {
+      throw new Error('Передан не массив');
+    }
     return array[Random.int(0, array.length - 1)];
   }
 
   static date() {
-    return dayjs(new Date(new Date() - Math.random() * 1e12)).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    return dayjs(new Date(new Date() - Math.random() * 1e12)).toISOString();
   }
 }
 
@@ -65,5 +68,12 @@ class ArrayEnhanced extends Array {
 }
 const humanizeFilmDurationDate = (minute) => dayjs({ minute }).format('H[h] mm[m]');
 const humanizeFilmReleaseDate = (date) => dayjs(date).format('M MMM YYYY');
+const humanizeCommentDate = (date) => dayjs(date).format('YYYY/MM/DD HH:mm');
 
-export { Random, ArrayEnhanced, humanizeFilmDurationDate, humanizeFilmReleaseDate };
+export {
+  Random,
+  ArrayEnhanced,
+  humanizeFilmDurationDate,
+  humanizeFilmReleaseDate,
+  humanizeCommentDate,
+};

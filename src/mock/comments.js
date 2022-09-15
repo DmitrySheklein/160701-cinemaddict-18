@@ -1,14 +1,26 @@
 import { Random, ArrayEnhanced } from '../util';
-import { emotions, description, names, surnames } from './const';
+import { emotions, description, names, surnames, generatePerson } from './const';
 
 const generateCommentText = () => new ArrayEnhanced(...description).randomLength().join(' ');
-const generatePerson = () => `${Random.itemFromArray(names)} ${Random.itemFromArray(surnames)}`;
-const generateComment = (id = 0) => ({
-  id: id,
-  text: generateCommentText(),
+const generateComment = () => ({
+  comment: generateCommentText(),
   emotion: Random.itemFromArray(emotions),
-  author: generatePerson(),
+  author: generatePerson(names, surnames),
   date: Random.date(),
 });
+const getCommentsCount = (films) =>
+  films.reduce((count, film) => (count += film.comments.length), 0);
 
-export { generateComment };
+const generateComments = (films) => {
+  const commentsCount = getCommentsCount(films);
+
+  return Array.from({ length: commentsCount }, (_value, index) => {
+    const commentItem = generateComment();
+
+    return {
+      id: String(index + 1),
+      ...commentItem,
+    };
+  });
+};
+export { generateComments };
