@@ -1,8 +1,7 @@
-import { createElement } from '../render';
-import createInfoTemplate from './film-popup/film-info-details-view';
-import createInfoControlsTemplate from './film-popup/film-details-control-view';
-import createEmojiList from './film-popup/emoji-list-view';
-import createComment from './film-popup/create-comment-view';
+import createInfoTemplate from './film-info-details-view';
+import createInfoControlsTemplate from './film-details-control-view';
+import createEmojiList from './emoji-list-view';
+import createComment from './create-comment-view';
 
 const createFilmsPopupTemplate = ({ filmInfo, userDetails }, comments) => `
   <section class="film-details">
@@ -44,25 +43,4 @@ const createFilmsPopupTemplate = ({ filmInfo, userDetails }, comments) => `
   </section>
   `;
 
-export default class FilmsPopup {
-  constructor(film, comments) {
-    this.film = film;
-    this.comments = comments;
-  }
-
-  getTemplate() {
-    return createFilmsPopupTemplate(this.film, this.comments);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-}
+export default createFilmsPopupTemplate;
