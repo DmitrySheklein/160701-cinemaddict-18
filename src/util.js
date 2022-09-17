@@ -66,16 +66,20 @@ class ArrayEnhanced extends Array {
     return this.shuffle(newArray).slice(0, Random.int(1, newArray.length - 1));
   }
 }
-const humanizeFilmDurationDate = (minute) => dayjs({ minute }).format('H[h] mm[m]');
-const humanizeFilmReleaseDate = (date) => dayjs(date).format('M MMM YYYY');
-const humanizeCommentDate = (date) => dayjs(date).format('YYYY/MM/DD HH:mm');
+class HumanizeDate {
+  static FilmDuration(minute) {
+    return dayjs({ minute }).format('H[h] mm[m]');
+  }
+
+  static FilmRelease(date) {
+    return dayjs(date).format('M MMM YYYY');
+  }
+
+  static Comment(date) {
+    return dayjs(date).format('YYYY/MM/DD HH:mm');
+  }
+}
+
 const isEsc = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-export {
-  Random,
-  ArrayEnhanced,
-  humanizeFilmDurationDate,
-  humanizeFilmReleaseDate,
-  humanizeCommentDate,
-  isEsc,
-};
+export { Random, ArrayEnhanced, HumanizeDate, isEsc };

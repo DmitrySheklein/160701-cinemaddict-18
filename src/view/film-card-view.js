@@ -1,5 +1,5 @@
 import { createElement } from '../render';
-import { humanizeFilmDurationDate } from '../util';
+import { HumanizeDate } from '../util';
 
 const createFilmCardControls = (userDetails) => {
   const { watchlist, alreadyWatched, favorite } = userDetails;
@@ -30,7 +30,7 @@ const createFilmsCardTemplate = ({ filmInfo, comments, userDetails }) => {
       <p class="film-card__rating">${totalRating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
-        <span class="film-card__duration">${humanizeFilmDurationDate(runtime)}</span>
+        <span class="film-card__duration">${HumanizeDate.FilmDuration(runtime)}</span>
         <span class="film-card__genre">${genre[0]}</span>
       </p>
       <img src="${`.${imgSrc}`}" alt="" class="film-card__poster">
