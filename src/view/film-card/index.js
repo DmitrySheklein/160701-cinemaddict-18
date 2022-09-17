@@ -1,18 +1,16 @@
 import { createElement } from '../../render';
-import createFilmsPopupTemplate from './film-popup-view';
+import createFilmsCardTemplate from './film-card-view';
 
-export default class FilmsPopup {
+export default class FilmsCard {
   #element = null;
   #film = null;
-  #comments = [];
 
-  constructor(film, comments) {
+  constructor(film) {
     this.#film = film;
-    this.#comments = comments;
   }
 
   get template() {
-    return createFilmsPopupTemplate(this.#film, this.#comments);
+    return createFilmsCardTemplate(this.#film);
   }
 
   get element() {

@@ -1,4 +1,4 @@
-import { humanizeFilmDurationDate, humanizeFilmReleaseDate } from '../../util';
+import { HumanizeDate } from '../../util';
 
 const createInfoTemplate = (filmInfo) => {
   const {
@@ -20,22 +20,22 @@ const createInfoTemplate = (filmInfo) => {
     <div class="film-details__info-wrap">
     <div class="film-details__poster">
       <img class="film-details__poster-img" src="${imgSrc}" alt="">
-  
+
       <p class="film-details__age">${ageRating}+</p>
     </div>
-  
+
     <div class="film-details__info">
       <div class="film-details__info-head">
         <div class="film-details__title-wrap">
           <h3 class="film-details__title">${title}</h3>
           <p class="film-details__title-original">${alternativeTitle}</p>
         </div>
-  
+
         <div class="film-details__rating">
           <p class="film-details__total-rating">${totalRating}</p>
         </div>
       </div>
-  
+
       <table class="film-details__table">
         <tr class="film-details__row">
           <td class="film-details__term">Director</td>
@@ -51,11 +51,11 @@ const createInfoTemplate = (filmInfo) => {
         </tr>
         <tr class="film-details__row">
           <td class="film-details__term">Release Date</td>
-          <td class="film-details__cell">${humanizeFilmReleaseDate(releaseDate)}</td>
+          <td class="film-details__cell">${HumanizeDate.FilmRelease(releaseDate)}</td>
         </tr>
         <tr class="film-details__row">
           <td class="film-details__term">Runtime</td>
-          <td class="film-details__cell">${humanizeFilmDurationDate(runtime)}</td>
+          <td class="film-details__cell">${HumanizeDate.FilmDuration(runtime)}</td>
         </tr>
         <tr class="film-details__row">
           <td class="film-details__term">Country</td>
@@ -68,7 +68,7 @@ const createInfoTemplate = (filmInfo) => {
           </td>
         </tr>
       </table>
-  
+
       <p class="film-details__film-description">
         ${description}
       </p>

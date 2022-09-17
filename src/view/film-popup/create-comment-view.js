@@ -1,4 +1,4 @@
-import { humanizeCommentDate } from '../../util';
+import { HumanizeDate } from '../../util';
 
 const createComment = (commentItem) => {
   const { comment, emotion, author, date } = commentItem;
@@ -12,7 +12,7 @@ const createComment = (commentItem) => {
       <p class="film-details__comment-text">${comment}</p>
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${humanizeCommentDate(date)}</span>
+        <span class="film-details__comment-day">${HumanizeDate.Comment(date)}</span>
         <button class="film-details__comment-delete">Delete</button>
       </p>
     </div>
