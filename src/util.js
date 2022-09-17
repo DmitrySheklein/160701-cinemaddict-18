@@ -69,6 +69,7 @@ class ArrayEnhanced extends Array {
 const humanizeFilmDurationDate = (minute) => dayjs({ minute }).format('H[h] mm[m]');
 const humanizeFilmReleaseDate = (date) => dayjs(date).format('M MMM YYYY');
 const humanizeCommentDate = (date) => dayjs(date).format('YYYY/MM/DD HH:mm');
+const isEsc = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 export {
   Random,
@@ -76,4 +77,5 @@ export {
   humanizeFilmDurationDate,
   humanizeFilmReleaseDate,
   humanizeCommentDate,
+  isEsc,
 };

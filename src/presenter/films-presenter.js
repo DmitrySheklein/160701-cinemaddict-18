@@ -4,6 +4,7 @@ import FilmsList from '../view/films-list-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import FilmsCard from '../view/film-card-view';
 import FilmsPopup from '../view/film-popup';
+import { isEsc } from '../util';
 
 export default class FilmsPresenter {
   #siteBodyElement = document.body;
@@ -17,6 +18,7 @@ export default class FilmsPresenter {
   #commentsModel = null;
 
   #films = [];
+  #filmPopupComponent = null;
 
   init = (filmsContainer, filmsModel, commentsModel) => {
     this.#filmsContainer = filmsContainer;
@@ -39,22 +41,31 @@ export default class FilmsPresenter {
     render(filmComponent, this.#filmsListContainerComponent);
   };
 
+  #onEscKeyDown = (evt) => {
+    if (isEsc(evt)) {
+      evt.preventDefault();
+      this.#removePopup();
+    }
+  };
+
   #renderPopup = (film) => {
     this.#removePopup();
     const comments = this.#commentsModel.get(film);
-    const filmPopupComponent = new FilmsPopup(film, comments);
+    this.#filmPopupComponent = new FilmsPopup(film, comments);
     this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
-    filmPopupComponent.element
+    this.#filmPopupComponent.element
       .querySelector('.film-details__close-btn')
-      .addEventListener('click', () => {
-        this.#removePopup();
-      });
-
-    render(filmPopupComponent, this.#siteBodyElement);
+      .addEventListener('click', this.#removePopup);
+    document.addEventListener('keydown', this.#onEscKeyDown);
+    render(this.#filmPopupComponent, this.#siteBodyElement);
   };
 
   #removePopup = () => {
     this.#siteBodyElement.classList.remove(this.#bodyHiddenClass);
-    this.#siteBodyElement.querySelector('.film-details')?.remove();
+    if (this.#filmPopupComponent) {
+      this.#siteBodyElement.removeChild(this.#filmPopupComponent.element);
+      this.#filmPopupComponent = null;
+    }
+    document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 }
