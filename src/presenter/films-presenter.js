@@ -7,6 +7,7 @@ import FilmsPopup from '../view/film-popup';
 
 export default class FilmsPresenter {
   #siteBodyElement = document.body;
+  #bodyHiddenClass = 'hide-overflow';
   #filmsContainerComponent = new FilmsContainer();
   #filmsListComponent = new FilmsList();
   #filmsListContainerComponent =
@@ -24,11 +25,36 @@ export default class FilmsPresenter {
 
     render(this.#filmsContainerComponent, this.#filmsContainer);
     render(this.#filmsListComponent, this.#filmsContainerComponent.element);
-    this.#films.forEach((film) => render(new FilmsCard(film), this.#filmsListContainerComponent));
+    this.#films.forEach(this.#renderFilm);
     render(new FilmsShowMoreBtn(), this.#filmsListComponent.element);
+  };
 
-    const filmItem = this.#films[0];
-    const comments = this.#commentsModel.get(filmItem);
-    render(new FilmsPopup(filmItem, comments), this.#siteBodyElement);
+  #renderFilm = (film) => {
+    const filmComponent = new FilmsCard(film);
+
+    filmComponent.element.querySelector('.film-card__link').addEventListener('click', (evt) => {
+      evt.preventDefault();
+      this.#renderPopup(film);
+    });
+    render(filmComponent, this.#filmsListContainerComponent);
+  };
+
+  #renderPopup = (film) => {
+    this.#removePopup();
+    const comments = this.#commentsModel.get(film);
+    const filmPopupComponent = new FilmsPopup(film, comments);
+    this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
+    filmPopupComponent.element
+      .querySelector('.film-details__close-btn')
+      .addEventListener('click', () => {
+        this.#removePopup();
+      });
+
+    render(filmPopupComponent, this.#siteBodyElement);
+  };
+
+  #removePopup = () => {
+    this.#siteBodyElement.classList.remove(this.#bodyHiddenClass);
+    this.#siteBodyElement.querySelector('.film-details')?.remove();
   };
 }
