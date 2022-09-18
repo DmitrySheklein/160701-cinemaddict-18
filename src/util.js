@@ -79,7 +79,8 @@ class HumanizeDate {
     return dayjs(date).format('YYYY/MM/DD HH:mm');
   }
 }
-
+const generatePerson = (namesArray = [], surnamesArray = []) =>
+  `${Random.itemFromArray(namesArray)} ${Random.itemFromArray(surnamesArray)}`;
 const isEsc = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-export { Random, ArrayEnhanced, HumanizeDate, isEsc };
+export { Random, ArrayEnhanced, HumanizeDate, generatePerson, isEsc };

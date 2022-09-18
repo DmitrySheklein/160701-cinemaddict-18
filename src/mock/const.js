@@ -1,6 +1,3 @@
-import { Random } from '../util';
-
-const MAX_COMMENTS_COUNT = 5;
 const FILM_CARD_COUNT = 17;
 const titles = [
   'The Green Mile',
@@ -138,8 +135,6 @@ const countries = [
 const emotions = ['smile', 'sleeping', 'puke', 'angry'];
 const names = ['Ivan', 'Makar', 'Boris', 'Dmitry'];
 const surnames = ['Ivanov', 'Petrov', 'Sidorov', 'Romanov'];
-const generatePerson = (namesArray = [], surnamesArray = []) =>
-  `${Random.itemFromArray(namesArray)} ${Random.itemFromArray(surnamesArray)}`;
 
 export {
   titles,
@@ -152,7 +147,5 @@ export {
   surnames,
   AgeRating,
   FilmRating,
-  MAX_COMMENTS_COUNT,
   FILM_CARD_COUNT,
-  generatePerson,
 };
