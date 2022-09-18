@@ -1,7 +1,7 @@
 import { Random } from '../util';
 
 const MAX_COMMENTS_COUNT = 5;
-const FILM_CARD_COUNT = 5;
+const FILM_CARD_COUNT = 0;
 const titles = [
   'The Green Mile',
   'The Shawshank Redemption',

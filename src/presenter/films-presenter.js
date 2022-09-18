@@ -1,9 +1,11 @@
 import { render } from '../render';
 import FilmsContainer from '../view/films-container-view';
 import FilmsList from '../view/films-list-view';
+import FilmsListTitle from '../view/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import FilmsCard from '../view/film-card';
 import FilmsPopup from '../view/film-popup';
+import SortView from '../view/sort-view';
 import { isEsc } from '../util';
 
 export default class FilmsPresenter {
@@ -11,6 +13,7 @@ export default class FilmsPresenter {
   #bodyHiddenClass = 'hide-overflow';
   #filmsContainerComponent = new FilmsContainer();
   #filmsListComponent = new FilmsList();
+  #filmsListTitleComponent = new FilmsListTitle();
   #filmsListContainerComponent =
     this.#filmsListComponent.element.querySelector('.films-list__container');
 
@@ -24,7 +27,12 @@ export default class FilmsPresenter {
     this.#filmsContainer = filmsContainer;
     this.#films = [...filmsModel.get()];
     this.#commentsModel = commentsModel;
+    if (!this.#films.length) {
+      render(this.#filmsListTitleComponent, this.#filmsContainer);
 
+      return;
+    }
+    render(new SortView(), this.#filmsContainer);
     render(this.#filmsContainerComponent, this.#filmsContainer);
     render(this.#filmsListComponent, this.#filmsContainerComponent.element);
     this.#films.forEach(this.#renderFilm);

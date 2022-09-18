@@ -1,7 +1,6 @@
 import { render } from './render';
 import ProfileView from './view/profile-view';
 import NavigationView from './view//navigation-view';
-import SortView from './view/sort-view';
 import FooterStatisticsView from './view/footer-statistics-view';
 import FilmsPresenter from './presenter/films-presenter';
 import FilmsModel from './model/films-model';
@@ -18,7 +17,6 @@ const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistic
 
 render(new ProfileView(), siteHeaderElement);
 render(new NavigationView(), siteMainElement);
-render(new SortView(), siteMainElement);
 
 filmsPresenter.init(siteMainElement, filmsModel, commentsModel);
 
