@@ -8,12 +8,14 @@ import FilmsPopup from '../view/film-popup';
 import SortView from '../view/sort-view';
 import { isEsc } from '../util';
 
+const FILM_COUNT_PER_STEP = 5;
 export default class FilmsPresenter {
   #siteBodyElement = document.body;
   #bodyHiddenClass = 'hide-overflow';
   #filmsContainerComponent = new FilmsContainer();
   #filmsListComponent = new FilmsList();
   #filmsListTitleComponent = new FilmsListTitle();
+  #filmsShowMoreBtn = new FilmsShowMoreBtn();
   #filmsListContainerComponent =
     this.#filmsListComponent.element.querySelector('.films-list__container');
 
@@ -21,22 +23,45 @@ export default class FilmsPresenter {
   #commentsModel = null;
 
   #films = [];
+  #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPopupComponent = null;
 
   init = (filmsContainer, filmsModel, commentsModel) => {
     this.#filmsContainer = filmsContainer;
     this.#films = [...filmsModel.get()];
     this.#commentsModel = commentsModel;
+
     if (!this.#films.length) {
       render(this.#filmsListTitleComponent, this.#filmsContainer);
+    } else {
+      render(new SortView(), this.#filmsContainer);
+      render(this.#filmsContainerComponent, this.#filmsContainer);
+      render(this.#filmsListComponent, this.#filmsContainerComponent.element);
+      this.#films.forEach((film, i) => {
+        if (i < Math.min(this.#films.length, FILM_COUNT_PER_STEP)) {
+          this.#renderFilm(film);
+        }
+      });
 
-      return;
+      if (this.#films.length > FILM_COUNT_PER_STEP) {
+        render(this.#filmsShowMoreBtn, this.#filmsListComponent.element);
+
+        this.#filmsShowMoreBtn.element.addEventListener('click', this.#onFilmsShowMoreBtnClick);
+      }
     }
-    render(new SortView(), this.#filmsContainer);
-    render(this.#filmsContainerComponent, this.#filmsContainer);
-    render(this.#filmsListComponent, this.#filmsContainerComponent.element);
-    this.#films.forEach(this.#renderFilm);
-    render(new FilmsShowMoreBtn(), this.#filmsListComponent.element);
+  };
+
+  #onFilmsShowMoreBtnClick = (evt) => {
+    evt.preventDefault();
+    this.#films
+      .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
+      .forEach(this.#renderFilm);
+    this.#renderedFilmCount += FILM_COUNT_PER_STEP;
+
+    if (this.#renderedFilmCount >= this.#films.length) {
+      this.#filmsShowMoreBtn.element.remove();
+      this.#filmsShowMoreBtn.removeElement();
+    }
   };
 
   #renderFilm = (film) => {
