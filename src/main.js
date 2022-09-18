@@ -12,12 +12,12 @@ const siteFooterElement = document.querySelector('.footer');
 
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel(filmsModel);
-const filmsPresenter = new FilmsPresenter();
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
 const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
 render(new ProfileView(), siteHeaderElement);
 render(new NavigationView(), siteMainElement);
 
-filmsPresenter.init(siteMainElement, filmsModel, commentsModel);
+filmsPresenter.init();
 
 render(new FooterStatisticsView(), siteFooterStatistics);

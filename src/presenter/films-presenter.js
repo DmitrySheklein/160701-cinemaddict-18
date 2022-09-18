@@ -20,17 +20,25 @@ export default class FilmsPresenter {
     this.#filmsListComponent.element.querySelector('.films-list__container');
 
   #filmsContainer = null;
+  #filmsModel = null;
   #commentsModel = null;
 
   #films = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPopupComponent = null;
 
-  init = (filmsContainer, filmsModel, commentsModel) => {
+  constructor(filmsContainer, filmsModel, commentsModel) {
     this.#filmsContainer = filmsContainer;
-    this.#films = [...filmsModel.get()];
+    this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
+  }
 
+  init = () => {
+    this.#films = [...this.#filmsModel.get()];
+    this.#renderFilms();
+  };
+
+  #renderFilms = () => {
     if (!this.#films.length) {
       render(this.#filmsListTitleComponent, this.#filmsContainer);
     } else {
