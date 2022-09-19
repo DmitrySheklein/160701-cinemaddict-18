@@ -1,5 +1,5 @@
-import { Random, ArrayEnhanced } from '../util';
-import { emotions, description, names, surnames, generatePerson } from './const';
+import { Random, ArrayEnhanced, generatePerson } from '../util';
+import { emotions, description, names, surnames } from './const';
 
 const generateCommentText = () => new ArrayEnhanced(...description).randomLength().join(' ');
 const generateComment = () => ({

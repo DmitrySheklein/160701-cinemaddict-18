@@ -1,6 +1,7 @@
-import { Random, ArrayEnhanced } from '../util';
-import { FILM_CARD_COUNT, MAX_COMMENTS_COUNT } from './const';
+import { Random, ArrayEnhanced, generatePerson } from '../util';
+import { MAX_COMMENTS_COUNT } from '../main-const';
 import {
+  FILM_CARD_COUNT,
   titles,
   description,
   images,
@@ -10,7 +11,6 @@ import {
   surnames,
   AgeRating,
   FilmRating,
-  generatePerson,
 } from './const';
 
 const generateGenre = () => new ArrayEnhanced(...genre).randomLength();
