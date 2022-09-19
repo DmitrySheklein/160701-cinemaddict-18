@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render } from '../framework/render';
 import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
