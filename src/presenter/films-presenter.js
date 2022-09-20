@@ -1,4 +1,4 @@
-import { render } from '../framework/render';
+import { render, remove } from '../framework/render';
 import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
@@ -73,8 +73,7 @@ export default class FilmsPresenter {
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#films.length) {
-      this.#filmsShowMoreBtn.element.remove();
-      this.#filmsShowMoreBtn.removeElement();
+      remove(this.#filmsShowMoreBtn);
     }
   };
 
@@ -104,7 +103,7 @@ export default class FilmsPresenter {
   #removePopup = () => {
     this.#siteBodyElement.classList.remove(this.#bodyHiddenClass);
     if (this.#filmPopup) {
-      this.#siteBodyElement.removeChild(this.#filmPopup.element);
+      remove(this.#filmPopup);
       this.#filmPopup = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);
