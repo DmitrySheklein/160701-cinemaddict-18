@@ -77,9 +77,11 @@ export default class FilmsPresenter {
     }
   };
 
+  #onFilmCardClick = (film) => this.#renderPopup(film);
+
   #renderFilm = (film) => {
     const filmComponent = new FilmsCard(film);
-    filmComponent.setClickHandler(() => this.#renderPopup(film));
+    filmComponent.setClickHandler(this.#onFilmCardClick);
     render(filmComponent, this.#filmsListContainer.element);
   };
 
