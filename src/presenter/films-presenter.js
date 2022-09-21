@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render, remove } from '../framework/render';
 import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
@@ -61,31 +61,27 @@ export default class FilmsPresenter {
       if (this.#films.length > FILM_COUNT_PER_STEP) {
         render(this.#filmsShowMoreBtn, this.#filmsListSection.element);
 
-        this.#filmsShowMoreBtn.element.addEventListener('click', this.#onFilmsShowMoreBtnClick);
+        this.#filmsShowMoreBtn.setClickHandler(this.#onFilmsShowMoreBtnClick);
       }
     }
   };
 
-  #onFilmsShowMoreBtnClick = (evt) => {
-    evt.preventDefault();
+  #onFilmsShowMoreBtnClick = () => {
     this.#films
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
       .forEach(this.#renderFilm);
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#films.length) {
-      this.#filmsShowMoreBtn.element.remove();
-      this.#filmsShowMoreBtn.removeElement();
+      remove(this.#filmsShowMoreBtn);
     }
   };
 
+  #onFilmCardClick = (film) => this.#renderPopup(film);
+
   #renderFilm = (film) => {
     const filmComponent = new FilmsCard(film);
-
-    filmComponent.element.querySelector('.film-card__link').addEventListener('click', (evt) => {
-      evt.preventDefault();
-      this.#renderPopup(film);
-    });
+    filmComponent.setClickHandler(this.#onFilmCardClick);
     render(filmComponent, this.#filmsListContainer.element);
   };
 
@@ -101,9 +97,7 @@ export default class FilmsPresenter {
     const comments = this.#commentsModel.get(film);
     this.#filmPopup = new FilmsPopup(film, comments);
     this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
-    this.#filmPopup.element
-      .querySelector('.film-details__close-btn')
-      .addEventListener('click', this.#removePopup);
+    this.#filmPopup.setCloseClickHandler(this.#removePopup);
     document.addEventListener('keydown', this.#onEscKeyDown);
     render(this.#filmPopup, this.#siteBodyElement);
   };
@@ -111,7 +105,7 @@ export default class FilmsPresenter {
   #removePopup = () => {
     this.#siteBodyElement.classList.remove(this.#bodyHiddenClass);
     if (this.#filmPopup) {
-      this.#siteBodyElement.removeChild(this.#filmPopup.element);
+      remove(this.#filmPopup);
       this.#filmPopup = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);

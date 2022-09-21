@@ -1,4 +1,4 @@
-import { render } from './render';
+import { render } from './framework/render';
 import ProfileView from './view/profile-view';
 import NavigationView from './view//navigation-view';
 import FooterStatisticsView from './view/footer-statistics-view';
