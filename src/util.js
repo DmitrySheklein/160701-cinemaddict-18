@@ -1,3 +1,4 @@
+import { NavigationType } from './main-const';
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
 dayjs.extend(objectSupport);
@@ -82,5 +83,13 @@ class HumanizeDate {
 const generatePerson = (namesArray = [], surnamesArray = []) =>
   `${Random.itemFromArray(namesArray)} ${Random.itemFromArray(surnamesArray)}`;
 const isEsc = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+const NavigationFilter = {
+  [NavigationType.ALL.id]: (films) => films,
+  [NavigationType.WATCHLIST.id]: (films) =>
+    films.filter(({ userDetails }) => userDetails.watchlist),
+  [NavigationType.HISTORY.id]: (films) =>
+    films.filter(({ userDetails }) => userDetails.alreadyWatched),
+  [NavigationType.FAVORITES.id]: (films) => films.filter(({ userDetails }) => userDetails.favorite),
+};
 
-export { Random, ArrayEnhanced, HumanizeDate, generatePerson, isEsc };
+export { Random, ArrayEnhanced, HumanizeDate, generatePerson, isEsc, NavigationFilter };
