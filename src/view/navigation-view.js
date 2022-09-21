@@ -10,7 +10,7 @@ const createNavigationTemplate = (navigationArray) => `
         }">${filterName} ${
           filterId !== 'all'
             ? `<span class="main-navigation__item-count">${filterCount}</span>`
-            : ``
+            : ''
         }</a>`,
     )
     .join('')}
