@@ -5,5 +5,23 @@ const StatusMap = {
   'Favorites': 'There are no favorite movies now',
 };
 const MAX_COMMENTS_COUNT = 5;
+const NavigationType = {
+  ALL: {
+    id: 'all',
+    name: 'All movies',
+  },
+  WATCHLIST: {
+    id: 'watchlist',
+    name: 'Watchlist',
+  },
+  HISTORY: {
+    id: 'history',
+    name: 'History',
+  },
+  FAVORITES: {
+    id: 'favorites',
+    name: 'Favorites',
+  },
+};
 
-export { StatusMap, MAX_COMMENTS_COUNT };
+export { StatusMap, MAX_COMMENTS_COUNT, NavigationType };
