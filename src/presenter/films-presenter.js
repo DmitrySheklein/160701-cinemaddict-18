@@ -4,15 +4,12 @@ import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import FilmsCard from '../view/film-card';
-import FilmsPopup from '../view/film-popup';
 import SortView from '../view/sort-view';
-import { isEsc } from '../util';
 import { StatusMap } from '../main-const';
+import FilmPopupPresenter from './film-popup-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
 export default class FilmsPresenter {
-  #siteBodyElement = document.body;
-  #bodyHiddenClass = 'hide-overflow';
   #filmsListSection = new FilmsListSection();
   #filmsListContainer = new FilmsListContainer();
   #filmsShowMoreBtn = new FilmsShowMoreBtn();
@@ -23,7 +20,6 @@ export default class FilmsPresenter {
 
   #films = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
-  #filmPopup = null;
 
   constructor(mainContainer, filmsModel, commentsModel) {
     this.#mainContainer = mainContainer;
@@ -77,37 +73,11 @@ export default class FilmsPresenter {
     }
   };
 
-  #onFilmCardClick = (film) => this.#renderPopup(film);
+  #onFilmCardClick = (film) => new FilmPopupPresenter(this.#commentsModel).init(film);
 
   #renderFilm = (film) => {
     const filmComponent = new FilmsCard(film);
     filmComponent.setClickHandler(this.#onFilmCardClick);
     render(filmComponent, this.#filmsListContainer.element);
-  };
-
-  #onEscKeyDown = (evt) => {
-    if (isEsc(evt)) {
-      evt.preventDefault();
-      this.#removePopup();
-    }
-  };
-
-  #renderPopup = (film) => {
-    this.#removePopup();
-    const comments = this.#commentsModel.get(film);
-    this.#filmPopup = new FilmsPopup(film, comments);
-    this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
-    this.#filmPopup.setCloseClickHandler(this.#removePopup);
-    document.addEventListener('keydown', this.#onEscKeyDown);
-    render(this.#filmPopup, this.#siteBodyElement);
-  };
-
-  #removePopup = () => {
-    this.#siteBodyElement.classList.remove(this.#bodyHiddenClass);
-    if (this.#filmPopup) {
-      remove(this.#filmPopup);
-      this.#filmPopup = null;
-    }
-    document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 }
