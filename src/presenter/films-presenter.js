@@ -3,10 +3,10 @@ import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
-import FilmsCard from '../view/film-card';
 import SortView from '../view/sort-view';
 import { StatusMap } from '../main-const';
-import FilmPopupPresenter from './film-popup-presenter';
+
+import FilmPresenter from './film-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
 export default class FilmsPresenter {
@@ -77,11 +77,8 @@ export default class FilmsPresenter {
     }
   };
 
-  #onFilmCardClick = (film) => new FilmPopupPresenter(this.#commentsModel).init(film);
-
   #renderFilm = (film) => {
-    const filmComponent = new FilmsCard(film);
-    filmComponent.setClickHandler(this.#onFilmCardClick);
-    render(filmComponent, this.#filmsListContainer.element);
+    const filmPresenter = new FilmPresenter(this.#filmsListContainer.element, this.#commentsModel);
+    filmPresenter.init(film);
   };
 }
