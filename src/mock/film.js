@@ -1,5 +1,6 @@
 import { Random, ArrayEnhanced, generatePerson } from '../util';
 import { MAX_COMMENTS_COUNT } from '../main-const';
+import { nanoid } from 'nanoid';
 import {
   FILM_CARD_COUNT,
   titles,
@@ -57,7 +58,7 @@ const generateFilms = () => {
 
     return {
       ...film,
-      id: String(index + 1),
+      id: nanoid(),
       comments: Array.from({ length: filmsCommentCount }, (_value, commentIndex) =>
         String(totalCommentCount - commentIndex),
       ),
