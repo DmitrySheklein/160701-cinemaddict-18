@@ -13,6 +13,7 @@ export default class FilmsPresenter {
   #filmsListSection = new FilmsListSection();
   #filmsListContainer = new FilmsListContainer();
   #filmsShowMoreBtn = new FilmsShowMoreBtn();
+  #sortView = new SortView();
 
   #mainContainer = null;
   #filmsModel = null;
@@ -29,43 +30,46 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.get()];
-    this.#renderFilms();
+    this.#renderFilmsBoard();
   };
 
-  #renderFilms = () => {
+  #renderFilmsBoard = () => {
+    render(this.#filmsListSection, this.#mainContainer);
     if (!this.#films.length) {
-      render(this.#filmsListSection, this.#mainContainer);
-      render(
-        new FilmsListTitle({ titleText: StatusMap['All movies'] }),
-        this.#filmsListSection.element,
-      );
-    } else {
-      render(new SortView(), this.#mainContainer);
-      render(this.#filmsListSection, this.#mainContainer);
-      render(
-        new FilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true }),
-        this.#filmsListSection.element,
-      );
-      render(this.#filmsListContainer, this.#filmsListSection.element);
+      this.#renderFilmsListTitle({ titleText: StatusMap['All movies'] });
 
-      this.#films.forEach((film, i) => {
-        if (i < Math.min(this.#films.length, FILM_COUNT_PER_STEP)) {
-          this.#renderFilm(film);
-        }
-      });
+      return;
+    }
+    this.#renderSort();
+    this.#renderFilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true });
+    render(this.#filmsListContainer, this.#filmsListSection.element);
+    this.#renderFilms(0, Math.min(this.#films.length, FILM_COUNT_PER_STEP));
 
-      if (this.#films.length > FILM_COUNT_PER_STEP) {
-        render(this.#filmsShowMoreBtn, this.#filmsListSection.element);
-
-        this.#filmsShowMoreBtn.setClickHandler(this.#onFilmsShowMoreBtnClick);
-      }
+    if (this.#films.length > FILM_COUNT_PER_STEP) {
+      this.#renderShowMoreBtn();
     }
   };
 
+  #renderFilms = (from, to) => {
+    this.#films.slice(from, to).forEach(this.#renderFilm);
+  };
+
+  #renderFilmsListTitle = (config) => {
+    render(new FilmsListTitle(config), this.#filmsListSection.element);
+  };
+
+  #renderSort = () => {
+    render(this.#sortView, this.#mainContainer);
+  };
+
+  #renderShowMoreBtn = () => {
+    render(this.#filmsShowMoreBtn, this.#filmsListSection.element);
+
+    this.#filmsShowMoreBtn.setClickHandler(this.#onFilmsShowMoreBtnClick);
+  };
+
   #onFilmsShowMoreBtnClick = () => {
-    this.#films
-      .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
-      .forEach(this.#renderFilm);
+    this.#renderFilms(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP);
     this.#renderedFilmCount += FILM_COUNT_PER_STEP;
 
     if (this.#renderedFilmCount >= this.#films.length) {
