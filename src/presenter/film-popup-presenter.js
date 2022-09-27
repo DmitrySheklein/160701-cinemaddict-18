@@ -1,4 +1,4 @@
-import { render, remove } from '../framework/render';
+import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
 
@@ -16,8 +16,28 @@ export default class FilmPopupPresenter {
   }
 
   init = (film) => {
-    this.#renderPopup(film);
     this.#film = film;
+    const prevPopupComponent = this.#filmPopup;
+    const comments = this.#commentsModel.get(this.#film);
+    this.#filmPopup = new FilmsPopup(this.#film, comments);
+    this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
+    this.#filmPopup.setCloseClickHandler(this.#removePopup);
+    this.#filmPopup.setFavotiteClickHandler(this.#onFavoriteBtnClick);
+    this.#filmPopup.setWatchListClickHandler(this.#onWatchListBtnClick);
+    this.#filmPopup.setWatchedClickHandler(this.#onWatchedBtnClick);
+    document.addEventListener('keydown', this.#onEscKeyDown);
+
+    if (prevPopupComponent === null) {
+      render(this.#filmPopup, this.#siteBodyElement);
+
+      return;
+    }
+
+    if (this.#siteBodyElement.contains(prevPopupComponent.element)) {
+      replace(this.#filmPopup, prevPopupComponent);
+    }
+
+    remove(prevPopupComponent);
   };
 
   #onEscKeyDown = (evt) => {
@@ -61,19 +81,6 @@ export default class FilmPopupPresenter {
     };
     this.#changeData(updatedFilm);
     this.init(updatedFilm);
-  };
-
-  #renderPopup = (film) => {
-    this.#removePopup();
-    const comments = this.#commentsModel.get(film);
-    this.#filmPopup = new FilmsPopup(film, comments);
-    this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
-    this.#filmPopup.setCloseClickHandler(this.#removePopup);
-    this.#filmPopup.setFavotiteClickHandler(this.#onFavoriteBtnClick);
-    this.#filmPopup.setWatchListClickHandler(this.#onWatchListBtnClick);
-    this.#filmPopup.setWatchedClickHandler(this.#onWatchedBtnClick);
-    document.addEventListener('keydown', this.#onEscKeyDown);
-    render(this.#filmPopup, this.#siteBodyElement);
   };
 
   #removePopup = () => {

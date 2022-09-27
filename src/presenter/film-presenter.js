@@ -8,11 +8,13 @@ export default class FilmPresenter {
   #filmComponent = null;
   #commentsModel = null;
   #changeData = null;
+  #filmPopupPresenter = null;
 
   constructor(container, commentsModel, changeData) {
     this.#container = container;
     this.#commentsModel = commentsModel;
     this.#changeData = changeData;
+    this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#changeData);
   }
 
   init = (film) => {
@@ -65,10 +67,9 @@ export default class FilmPresenter {
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
     });
-    this.init()
   };
 
-  #onFilmCardClick = (film) => new FilmPopupPresenter(this.#commentsModel, this.#changeData).init(film);
+  #onFilmCardClick = (film) => this.#filmPopupPresenter.init(film);
 
   destroy = () => {
     remove(this.#filmComponent);
