@@ -7,13 +7,17 @@ export default class FilmPopupPresenter {
   #bodyHiddenClass = 'hide-overflow';
   #filmPopup = null;
   #commentsModel = null;
+  #changeData = null;
+  #film = null;
 
-  constructor(commentsModel) {
+  constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
+    this.#changeData = changeData;
   }
 
   init = (film) => {
     this.#renderPopup(film);
+    this.#film = film;
   };
 
   #onEscKeyDown = (evt) => {
@@ -24,15 +28,39 @@ export default class FilmPopupPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    console.log('fav');
+    const updatedFilm = {
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        favorite: !this.#film.userDetails.favorite,
+      },
+    };
+    this.#changeData(updatedFilm);
+    this.init(updatedFilm);
   };
 
   #onWatchListBtnClick = () => {
-    console.log('wathlist');
+    const updatedFilm = {
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        watchlist: !this.#film.userDetails.watchlist,
+      },
+    };
+    this.#changeData(updatedFilm);
+    this.init(updatedFilm);
   };
 
   #onWatchedBtnClick = () => {
-    console.log('mark-watched');
+    const updatedFilm = {
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched,
+      },
+    };
+    this.#changeData(updatedFilm);
+    this.init(updatedFilm);
   };
 
   #renderPopup = (film) => {

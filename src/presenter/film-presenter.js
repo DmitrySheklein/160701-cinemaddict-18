@@ -7,10 +7,12 @@ export default class FilmPresenter {
   #film = null;
   #filmComponent = null;
   #commentsModel = null;
+  #changeData = null;
 
-  constructor(container, commentsModel) {
+  constructor(container, commentsModel, changeData) {
     this.#container = container;
     this.#commentsModel = commentsModel;
+    this.#changeData = changeData;
   }
 
   init = (film) => {
@@ -36,18 +38,37 @@ export default class FilmPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    console.log('fav');
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        favorite: !this.#film.userDetails.favorite,
+      },
+    });
   };
 
   #onWatchListBtnClick = () => {
-    console.log('wathlist');
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        watchlist: !this.#film.userDetails.watchlist,
+      },
+    });
   };
 
   #onWatchedBtnClick = () => {
-    console.log('mark-watched');
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched,
+      },
+    });
+    this.init()
   };
 
-  #onFilmCardClick = (film) => new FilmPopupPresenter(this.#commentsModel).init(film);
+  #onFilmCardClick = (film) => new FilmPopupPresenter(this.#commentsModel, this.#changeData).init(film);
 
   destroy = () => {
     remove(this.#filmComponent);
