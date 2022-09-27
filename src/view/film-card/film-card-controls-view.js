@@ -6,16 +6,16 @@ const createFilmCardControls = (userDetails) => {
   return `
 <div class="film-card__controls">
     <button class="${btnClassName} film-card__controls-item--add-to-watchlist ${
-    watchlist ? activeClassName : ''
-  }" type="button">
+  watchlist ? activeClassName : ''
+}" type="button">
       Add to watchlist
     </button>
     <button class="${btnClassName} film-card__controls-item--mark-as-watched ${
-    alreadyWatched ? activeClassName : ''
-  }" type="button">Mark as watched</button>
+  alreadyWatched ? activeClassName : ''
+}" type="button">Mark as watched</button>
     <button class="${btnClassName} film-card__controls-item--favorite ${
-    favorite ? activeClassName : ''
-  }" type="button">Mark as favorite</button>
+  favorite ? activeClassName : ''
+}" type="button">Mark as favorite</button>
 </div>`;
 };
 
