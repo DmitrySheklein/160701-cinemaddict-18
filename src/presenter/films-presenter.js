@@ -7,7 +7,7 @@ import FilmsListTitle from '../view/films-list/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import SortView from '../view/sort-view';
 import { StatusMap } from '../main-const';
-
+import { updateItem } from '../util';
 import FilmPresenter from './film-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -100,5 +100,10 @@ export default class FilmsPresenter {
     this.#filmPresenter.forEach((presenter) => presenter.destroy());
     this.#filmPresenter.clear();
     remove(this.#filmsShowMoreBtn);
+  };
+
+  #handleFilmChange = (updatedFilm) => {
+    this.#films = updateItem(this.#films, updatedFilm);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
   };
 }
