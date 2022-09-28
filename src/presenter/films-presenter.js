@@ -9,6 +9,7 @@ import SortView from '../view/sort-view';
 import { StatusMap } from '../main-const';
 import { updateItem } from '../util';
 import FilmPresenter from './film-presenter';
+import FilmPopupPresenter from './film-popup-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
 export default class FilmsPresenter {
@@ -24,11 +25,13 @@ export default class FilmsPresenter {
   #films = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPresenter = new Map();
+  #filmPopupPresenter = null;
 
   constructor(mainContainer, filmsModel, commentsModel) {
     this.#mainContainer = mainContainer;
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
+    this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleFilmChange);
   }
 
   init = () => {
@@ -93,7 +96,7 @@ export default class FilmsPresenter {
   #renderFilm = (film) => {
     const filmPresenter = new FilmPresenter(
       this.#filmsListContainer.element,
-      this.#commentsModel,
+      this.#filmPopupPresenter,
       this.#handleFilmChange,
     );
     filmPresenter.init(film);

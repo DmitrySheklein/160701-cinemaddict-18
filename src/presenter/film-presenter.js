@@ -1,20 +1,17 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsCard from '../view/film-card';
-import FilmPopupPresenter from './film-popup-presenter';
 
 export default class FilmPresenter {
   #container = null;
   #film = null;
   #filmComponent = null;
-  #commentsModel = null;
   #changeData = null;
   #filmPopupPresenter = null;
 
-  constructor(container, commentsModel, changeData) {
+  constructor(container, popupPresenter, changeData) {
     this.#container = container;
-    this.#commentsModel = commentsModel;
     this.#changeData = changeData;
-    this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#changeData);
+    this.#filmPopupPresenter = popupPresenter;
   }
 
   init = (film) => {
@@ -69,7 +66,13 @@ export default class FilmPresenter {
     });
   };
 
-  #onFilmCardClick = (film) => this.#filmPopupPresenter.init(film);
+  #onFilmCardClick = (film) => {
+    const currentFilm = this.#filmPopupPresenter.currentFilm;
+
+    if (currentFilm?.id !== film.id) {
+      this.#filmPopupPresenter.init(film);
+    }
+  };
 
   destroy = () => {
     remove(this.#filmComponent);
