@@ -15,6 +15,10 @@ export default class FilmPopupPresenter {
     this.#changeData = changeData;
   }
 
+  get currentFilm() {
+    return this.#film;
+  }
+
   init = (film) => {
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
@@ -88,6 +92,7 @@ export default class FilmPopupPresenter {
     if (this.#filmPopup) {
       remove(this.#filmPopup);
       this.#filmPopup = null;
+      this.#film = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);
   };
