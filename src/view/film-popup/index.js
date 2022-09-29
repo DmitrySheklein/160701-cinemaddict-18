@@ -1,19 +1,97 @@
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createFilmsPopupTemplate from './film-popup-view';
 
-export default class FilmsPopup extends AbstractView {
-  #film = null;
-  #comments = [];
+export default class FilmsPopup extends AbstractStatefulView {
+  _state = [];
 
   constructor(film, comments) {
     super();
-    this.#film = film;
-    this.#comments = comments;
+    this._state = {
+      film: FilmsPopup.parseFilmToState(film),
+      comments: FilmsPopup.parseCommentsToState(comments),
+      newComment: {
+        comment: '',
+        emotion: '',
+      },
+      scrollPosition: 0,
+    };
+    this.#setInnerHandlers();
   }
 
   get template() {
-    return createFilmsPopupTemplate(this.#film, this.#comments);
+    return createFilmsPopupTemplate(this._state.film, this._state.comments, this._state.newComment);
   }
+
+  static parseFilmToState = (film) => ({ ...film });
+
+  static parseStateToFilm = (state) => ({ ...state });
+
+  static parseCommentsToState = (comments) => [...comments];
+
+  static parseStateToComments = (state) => [...state];
+
+  setCommentsFormSubmitHandler = (callback) => {
+    this._callback.commentsFormSubmit = callback;
+    this.element
+      .querySelector('.film-details__new-comment')
+      .addEventListener('submit', this.#commentsFormSubmitHandler);
+  };
+
+  #commentsFormSubmitHandler = (evt) => {
+    evt.preventDefault();
+    console.log('submit');
+    this._callback.commentsFormSubmit(FilmsPopup.parseStateToComments(this._state));
+  };
+
+  #setInnerHandlers = () => {
+    this.element
+      .querySelector('.film-details__comment-input')
+      .addEventListener('change', this.#commentsInputHandler);
+    this.element
+      .querySelectorAll('.film-details__emoji-item[type="radio"]')
+      .forEach((input) => input.addEventListener('change', this.#emotionsInputHandler));
+    this.element
+      .querySelectorAll('.film-details__comment-delete')
+      .forEach((btn) => btn.addEventListener('click', this.#removeCommentBtnHandler));
+  };
+
+  #removeCommentBtnHandler = (evt) => {
+    const removedId = evt.target.closest('[data-id]')?.dataset.id;
+
+    if (removedId) {
+      this.updateElement({
+        comments: this._state.comments.filter((el) => el.id !== removedId),
+      });
+    }
+  };
+
+  #emotionsInputHandler = (evt) => {
+    const emotion = evt.target.value;
+
+    this.updateElement({
+      newComment: {
+        ...this._state.newComment,
+        emotion,
+      },
+    });
+  };
+
+  #commentsInputHandler = (evt) => {
+    const value = evt.target.value;
+
+    this.updateElement({
+      newComment: {
+        ...this._state.newComment,
+        comment: value,
+      },
+    });
+  };
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setCloseClickHandler(this._callback.closeClick);
+    this.setCommentsFormSubmitHandler(this._callback.commentsFormSubmit);
+  };
 
   setCloseClickHandler = (callback) => {
     this._callback.closeClick = callback;
@@ -36,7 +114,7 @@ export default class FilmsPopup extends AbstractView {
 
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.favoriteClick(this.#film);
+    this._callback.favoriteClick(this._state.film);
   };
 
   setWatchListClickHandler = (callback) => {
@@ -48,7 +126,7 @@ export default class FilmsPopup extends AbstractView {
 
   #watchListClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.watchListClick(this.#film);
+    this._callback.watchListClick(this._state.film);
   };
 
   setWatchedClickHandler = (callback) => {
@@ -60,6 +138,6 @@ export default class FilmsPopup extends AbstractView {
 
   #watchedClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.watchedClick(this.#film);
+    this._callback.watchedClick(this._state.film);
   };
 }
