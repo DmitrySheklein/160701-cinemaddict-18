@@ -23,5 +23,10 @@ const NavigationType = {
     name: 'Favorites',
   },
 };
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
 
-export { StatusMap, MAX_COMMENTS_COUNT, NavigationType };
+export { StatusMap, MAX_COMMENTS_COUNT, NavigationType, SortType };

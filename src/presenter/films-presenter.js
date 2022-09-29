@@ -9,6 +9,8 @@ import SortView from '../view/sort-view';
 import { StatusMap } from '../main-const';
 import { updateItem } from '../util';
 import FilmPresenter from './film-presenter';
+import { SortType } from '../main-const';
+import { sortFilmsDate, sortFilmsRating } from '../util';
 import FilmPopupPresenter from './film-popup-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -25,6 +27,8 @@ export default class FilmsPresenter {
   #films = [];
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPresenter = new Map();
+  #currentFilmSort = SortType.DEFAULT;
+  #sourcedFilms = [];
   #filmPopupPresenter = null;
 
   constructor(mainContainer, filmsModel, commentsModel) {
@@ -36,6 +40,7 @@ export default class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.get()];
+    this.#sourcedFilms = [...this.#filmsModel.get()];
     this.#renderFilmsBoard();
   };
 
@@ -52,16 +57,20 @@ export default class FilmsPresenter {
     }
 
     this.#renderFilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true });
-    render(this.#filmsListContainer, this.#filmsListSection.element);
-    this.#renderFilms(0, Math.min(this.#films.length, FILM_COUNT_PER_STEP));
-
-    if (this.#films.length > FILM_COUNT_PER_STEP) {
-      this.#renderShowMoreBtn();
-    }
+    this.#renderFilmsList();
   };
 
   #renderFilms = (from, to) => {
     this.#films.slice(from, to).forEach(this.#renderFilm);
+  };
+
+  #renderFilmsList = (from = 0, to = Math.min(this.#films.length, FILM_COUNT_PER_STEP)) => {
+    render(this.#filmsListContainer, this.#filmsListSection.element);
+    this.#renderFilms(from, to);
+
+    if (this.#films.length > FILM_COUNT_PER_STEP) {
+      this.#renderShowMoreBtn();
+    }
   };
 
   #renderNavigation = () => {
@@ -74,8 +83,34 @@ export default class FilmsPresenter {
     render(new FilmsListTitle(config), this.#filmsListSection.element);
   };
 
+  #sortFilms = (sortType) => {
+    switch (sortType) {
+      case SortType.DATE:
+        this.#films.sort(sortFilmsDate);
+        break;
+      case SortType.RATING:
+        this.#films.sort(sortFilmsRating);
+        break;
+
+      default:
+        this.#films = [...this.#sourcedFilms];
+    }
+    this.#currentFilmSort = sortType;
+  };
+
+  #onSortChange = (sortType) => {
+    if (this.#currentFilmSort === sortType) {
+      return;
+    }
+
+    this.#sortFilms(sortType);
+    this.#clearFilmsBoard();
+    this.#renderFilmsList(0, this.#renderedFilmCount);
+  };
+
   #renderSort = () => {
     render(this.#sortView, this.#mainContainer);
+    this.#sortView.setSortTypeHandler(this.#onSortChange);
   };
 
   #renderShowMoreBtn = () => {
@@ -111,6 +146,7 @@ export default class FilmsPresenter {
 
   #handleFilmChange = (updatedFilm) => {
     this.#films = updateItem(this.#films, updatedFilm);
+    this.#sourcedFilms = updateItem(this.#sourcedFilms, updatedFilm);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
   };
 }
