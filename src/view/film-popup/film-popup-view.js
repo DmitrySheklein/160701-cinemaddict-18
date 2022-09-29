@@ -1,9 +1,9 @@
 import createInfoTemplate from './film-info-details-view';
 import createInfoControlsTemplate from './film-details-control-view';
-import createEmojiList from './emoji-list-view';
 import createComment from './create-comment-view';
+import createCommentForm from './form-new-comment-view';
 
-const createFilmsPopupTemplate = ({ filmInfo, userDetails }, comments) => `
+const createFilmsPopupTemplate = ({ filmInfo, userDetails }, comments, newComment) => `
   <section class="film-details">
     <div class="film-details__inner">
       <div class="film-details__top-container">
@@ -26,17 +26,7 @@ const createFilmsPopupTemplate = ({ filmInfo, userDetails }, comments) => `
             ${comments.map(createComment).join('')}
           </ul>
   
-          <form class="film-details__new-comment" action="" method="get">
-            <div class="film-details__add-emoji-label"></div>
-  
-            <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-            </label>
-  
-            <div class="film-details__emoji-list">
-              ${createEmojiList()}
-            </div>
-          </form>
+            ${createCommentForm(newComment)}
         </section>
       </div>
     </div>
