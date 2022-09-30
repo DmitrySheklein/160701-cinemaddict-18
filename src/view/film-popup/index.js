@@ -1,5 +1,6 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createFilmsPopupTemplate from './film-popup-view';
+import { DEFAULT_VIEW_POPUP_DATA } from '../../main-const';
 
 export default class FilmsPopup extends AbstractStatefulView {
   constructor(film, comments, newComment, scrollPosition, updateViewData) {
@@ -17,7 +18,12 @@ export default class FilmsPopup extends AbstractStatefulView {
     return createFilmsPopupTemplate(this._state);
   }
 
-  static parseDataToState = (film, comments, newComment, scrollPosition) => ({
+  static parseDataToState = (
+    film,
+    comments,
+    newComment = DEFAULT_VIEW_POPUP_DATA.newComment,
+    scrollPosition = DEFAULT_VIEW_POPUP_DATA.scrollPosition,
+  ) => ({
     film,
     comments,
     newComment,

@@ -1,14 +1,8 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
+import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 
-const DEFAULT_VIEW_DATA = {
-  newComment: {
-    comment: '',
-    emotion: '',
-  },
-  scrollPosition: 0,
-};
 export default class FilmPopupPresenter {
   #siteBodyElement = document.body;
   #bodyHiddenClass = 'hide-overflow';
@@ -17,7 +11,7 @@ export default class FilmPopupPresenter {
   #changeData = null;
   #film = null;
 
-  #viewData = { ...DEFAULT_VIEW_DATA };
+  #viewData = { ...DEFAULT_VIEW_POPUP_DATA };
 
   constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
@@ -69,7 +63,7 @@ export default class FilmPopupPresenter {
     };
 
     if (PopupComponentId.prev !== PopupComponentId.current) {
-      this.#updateViewData(DEFAULT_VIEW_DATA);
+      this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
     }
   };
 
@@ -143,6 +137,6 @@ export default class FilmPopupPresenter {
       this.#film = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);
-    this.#updateViewData(DEFAULT_VIEW_DATA);
+    this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
   };
 }

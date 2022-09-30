@@ -28,5 +28,12 @@ const SortType = {
   DATE: 'date',
   RATING: 'rating',
 };
+const DEFAULT_VIEW_POPUP_DATA = {
+  newComment: {
+    comment: '',
+    emotion: '',
+  },
+  scrollPosition: 0,
+};
 
-export { StatusMap, MAX_COMMENTS_COUNT, NavigationType, SortType };
+export { StatusMap, MAX_COMMENTS_COUNT, NavigationType, SortType, DEFAULT_VIEW_POPUP_DATA };
