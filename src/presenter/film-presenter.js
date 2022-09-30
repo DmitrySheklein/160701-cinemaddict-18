@@ -10,8 +10,8 @@ export default class FilmPresenter {
 
   constructor(container, popupPresenter, changeData) {
     this.#container = container;
-    this.#changeData = changeData;
     this.#filmPopupPresenter = popupPresenter;
+    this.#changeData = changeData;
   }
 
   init = (film) => {

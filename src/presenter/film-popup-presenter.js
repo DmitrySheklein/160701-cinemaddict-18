@@ -70,7 +70,11 @@ export default class FilmPopupPresenter {
   };
 
   #onCommentBtnRemoveClick = (comments) => {
-    console.log(comments);
+    const updatedFilm = {
+      ...this.#film,
+      comments: comments.map((el) => el.id),
+    };
+    this.#changeData(updatedFilm);
   };
 
   #onEscKeyDown = (evt) => {
