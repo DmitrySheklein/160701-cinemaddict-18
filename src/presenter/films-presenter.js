@@ -152,6 +152,9 @@ export default class FilmsPresenter {
     this.#films = updateItem(this.#films, updatedFilm);
     this.#sourcedFilms = updateItem(this.#sourcedFilms, updatedFilm);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
-    this.#filmPopupPresenter.init(updatedFilm);
+
+    if (this.#filmPopupPresenter.currentFilm) {
+      this.#filmPopupPresenter.init(updatedFilm);
+    }
   };
 }
