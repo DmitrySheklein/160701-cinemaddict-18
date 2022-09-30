@@ -9,6 +9,10 @@ export default class FilmsPopup extends AbstractStatefulView {
     this.#setInnerHandlers();
   }
 
+  get currentFilm() {
+    return this._state.film;
+  }
+
   get template() {
     return createFilmsPopupTemplate(this._state);
   }

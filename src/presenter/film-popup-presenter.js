@@ -29,9 +29,9 @@ export default class FilmPopupPresenter {
   }
 
   init = (film) => {
-    this.#updateViewData(DEFAULT_VIEW_DATA);
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
+    this.#checkClearComments(prevPopupComponent, this.#film);
     const comments = this.#commentsModel.get(this.#film);
     this.#filmPopup = new FilmsPopup(
       this.#film,
@@ -60,6 +60,17 @@ export default class FilmPopupPresenter {
     }
 
     remove(prevPopupComponent);
+  };
+
+  #checkClearComments = (popupComponent, currentFilm) => {
+    const PopupComponentId = {
+      prev: popupComponent?.currentFilm?.id,
+      current: currentFilm.id,
+    };
+
+    if (PopupComponentId.prev !== PopupComponentId.current) {
+      this.#updateViewData(DEFAULT_VIEW_DATA);
+    }
   };
 
   #updateViewData = (viewData) => {
