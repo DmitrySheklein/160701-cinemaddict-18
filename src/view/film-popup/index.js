@@ -47,12 +47,13 @@ export default class FilmsPopup extends AbstractStatefulView {
     this._callback.commentsFormSubmit = callback;
     this.element
       .querySelector('form.film-details__new-comment')
-      .addEventListener('submit', this.#commentsFormSubmitHandler);
+      .addEventListener('keydown', this.#commentsFormSubmitHandler);
   };
 
   #commentsFormSubmitHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
+    if ((evt.ctrlKey || evt.metaKey) && evt.key === 'Enter') {
+      this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
+    }
   };
 
   #setInnerHandlers = () => {
@@ -61,16 +62,12 @@ export default class FilmsPopup extends AbstractStatefulView {
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this.#commentsInputHandler);
     this.element
-      .querySelector('.film-details__comment-input')
-      .addEventListener('keydown', this.#commentsInputKeyDownHandler);
-    this.element
       .querySelectorAll('.film-details__emoji-item[type="radio"]')
       .forEach((input) => input.addEventListener('change', this.#emotionsInputHandler));
   };
 
   #onScroll = (evt) => {
     const scrollValue = evt.target.scrollTop;
-    //TODO правильно ли обновлять стейт
     this._setState({ scrollPosition: scrollValue });
   };
 
@@ -102,14 +99,6 @@ export default class FilmsPopup extends AbstractStatefulView {
       },
     });
     this.#updateViewData();
-  };
-
-  #commentsInputKeyDownHandler = (evt) => {
-    //TODO сделать закрытие по Control + Enter
-    // if (evt.key === 'Enter' && evt.key === 'Control') {
-    if (evt.key === 'Enter') {
-      this.#commentsFormSubmitHandler(evt);
-    }
   };
 
   #commentsInputHandler = (evt) => {

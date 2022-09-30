@@ -77,8 +77,8 @@ export default class FilmPopupPresenter {
     this.#viewData = { ...viewData };
   };
 
-  #onCommentsFormSubmit = (newComment) => {
-    console.log(newComment);
+  #onCommentsFormSubmit = () => {
+    // console.log(newComment);
   };
 
   #onCommentBtnRemoveClick = (comments) => {
