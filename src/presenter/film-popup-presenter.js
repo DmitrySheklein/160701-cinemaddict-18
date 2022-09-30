@@ -29,6 +29,7 @@ export default class FilmPopupPresenter {
   }
 
   init = (film) => {
+    this.#updateViewData(DEFAULT_VIEW_DATA);
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
     const comments = this.#commentsModel.get(this.#film);

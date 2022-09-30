@@ -55,7 +55,7 @@ export default class FilmsPopup extends AbstractStatefulView {
     this.element.addEventListener('scroll', this.#onScroll);
     this.element
       .querySelector('.film-details__comment-input')
-      .addEventListener('input', this.#commentsInputHandler); //TODO побороть ввод только одного символа
+      .addEventListener('input', this.#commentsInputHandler);
     this.element
       .querySelector('.film-details__comment-input')
       .addEventListener('keydown', this.#commentsInputKeyDownHandler);
@@ -111,7 +111,7 @@ export default class FilmsPopup extends AbstractStatefulView {
   #commentsInputHandler = (evt) => {
     const value = evt.target.value;
 
-    this.updateElement({
+    this._setState({
       newComment: {
         ...this._state.newComment,
         comment: value,
