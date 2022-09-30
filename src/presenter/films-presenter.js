@@ -38,6 +38,10 @@ export default class FilmsPresenter {
     this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleFilmChange);
   }
 
+  get films() {
+    return this.#filmsModel.get();
+  }
+
   init = () => {
     this.#films = [...this.#filmsModel.get()];
     this.#sourcedFilms = [...this.#filmsModel.get()];
