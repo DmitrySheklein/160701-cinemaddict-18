@@ -31,6 +31,7 @@ export default class FilmsPresenter {
   constructor(mainContainer, filmsModel, commentsModel) {
     this.#mainContainer = mainContainer;
     this.#filmsModel = filmsModel;
+    this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#commentsModel = commentsModel;
     this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleFilmChange);
   }
@@ -130,7 +131,7 @@ export default class FilmsPresenter {
     const filmPresenter = new FilmPresenter(
       this.#filmsListContainer.element,
       this.#filmPopupPresenter,
-      this.#handleFilmChange,
+      this.#handleViewAction,
     );
     filmPresenter.init(film);
     this.#filmPresenter.set(film.id, filmPresenter);
@@ -148,5 +149,13 @@ export default class FilmsPresenter {
     if (this.#filmPopupPresenter.currentFilm) {
       this.#filmPopupPresenter.init(updatedFilm);
     }
+  };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
   };
 }

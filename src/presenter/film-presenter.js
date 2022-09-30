@@ -1,5 +1,6 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsCard from '../view/film-card';
+import { UserAction, UpdateType } from '../main-const';
 
 export default class FilmPresenter {
   #container = null;
@@ -37,7 +38,7 @@ export default class FilmPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    this.#changeData({
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -47,7 +48,7 @@ export default class FilmPresenter {
   };
 
   #onWatchListBtnClick = () => {
-    this.#changeData({
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -57,7 +58,7 @@ export default class FilmPresenter {
   };
 
   #onWatchedBtnClick = () => {
-    this.#changeData({
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,

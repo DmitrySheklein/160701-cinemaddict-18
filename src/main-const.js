@@ -35,5 +35,23 @@ const DEFAULT_VIEW_POPUP_DATA = {
   },
   scrollPosition: 0,
 };
+const UserAction = {
+  UPDATE_FILM: 'UPDATE_FILM',
+  ADD_COMMENT: 'ADD_COMMENT',
+  DELETE_COMMENT: 'ADD_COMMENT',
+};
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
 
-export { StatusMap, MAX_COMMENTS_COUNT, NavigationType, SortType, DEFAULT_VIEW_POPUP_DATA };
+export {
+  UpdateType,
+  UserAction,
+  StatusMap,
+  MAX_COMMENTS_COUNT,
+  NavigationType,
+  SortType,
+  DEFAULT_VIEW_POPUP_DATA,
+};
