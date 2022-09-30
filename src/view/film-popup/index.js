@@ -1,19 +1,134 @@
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createFilmsPopupTemplate from './film-popup-view';
+import { DEFAULT_VIEW_POPUP_DATA } from '../../main-const';
 
-export default class FilmsPopup extends AbstractView {
-  #film = null;
-  #comments = [];
-
-  constructor(film, comments) {
+export default class FilmsPopup extends AbstractStatefulView {
+  constructor(film, comments, newComment, scrollPosition, updateViewData) {
     super();
-    this.#film = film;
-    this.#comments = comments;
+    this._state = FilmsPopup.parseDataToState(film, comments, newComment, scrollPosition);
+    this.updateViewData = updateViewData;
+    this.#setInnerHandlers();
+  }
+
+  get currentFilm() {
+    return this._state.film;
   }
 
   get template() {
-    return createFilmsPopupTemplate(this.#film, this.#comments);
+    return createFilmsPopupTemplate(this._state);
   }
+
+  static parseDataToState = (
+    film,
+    comments,
+    newComment = DEFAULT_VIEW_POPUP_DATA.newComment,
+    scrollPosition = DEFAULT_VIEW_POPUP_DATA.scrollPosition,
+  ) => ({
+    film,
+    comments,
+    newComment,
+    scrollPosition,
+  });
+
+  static parseStateToData = (state) => {
+    const newState = { ...state };
+
+    delete newState.film;
+    delete newState.scrollPosition;
+    return newState;
+  };
+
+  #updateViewData = () => {
+    this.updateViewData({
+      newComment: this._state.newComment,
+      scrollPosition: this._state.scrollPosition,
+    });
+  };
+
+  setScrollPosition = () => {
+    this.element.scrollTop = this._state.scrollPosition;
+  };
+
+  setCommentsFormSubmitHandler = (callback) => {
+    this._callback.commentsFormSubmit = callback;
+    this.element
+      .querySelector('form.film-details__new-comment')
+      .addEventListener('keydown', this.#commentsFormSubmitHandler);
+  };
+
+  #commentsFormSubmitHandler = (evt) => {
+    if ((evt.ctrlKey || evt.metaKey) && evt.key === 'Enter') {
+      this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
+    }
+  };
+
+  #setInnerHandlers = () => {
+    this.element.addEventListener('scroll', this.#onScroll);
+    this.element
+      .querySelector('.film-details__comment-input')
+      .addEventListener('input', this.#commentsInputHandler);
+    this.element
+      .querySelectorAll('.film-details__emoji-item[type="radio"]')
+      .forEach((input) => input.addEventListener('change', this.#emotionsInputHandler));
+  };
+
+  #onScroll = (evt) => {
+    const scrollValue = evt.target.scrollTop;
+    this._setState({ scrollPosition: scrollValue });
+  };
+
+  setCommentRemoveHandler = (callback) => {
+    this._callback.removeBtnClick = callback;
+    this.element
+      .querySelectorAll('.film-details__comment-delete')
+      .forEach((btn) => btn.addEventListener('click', this.#removeCommentBtnHandler));
+  };
+
+  #removeCommentBtnHandler = (evt) => {
+    const removedId = evt.target.closest('[data-id]')?.dataset.id;
+
+    if (removedId) {
+      this.updateElement({
+        comments: this._state.comments.filter((el) => el.id !== removedId),
+      });
+      this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
+    }
+  };
+
+  #emotionsInputHandler = (evt) => {
+    const emotion = evt.target.value;
+
+    this.updateElement({
+      newComment: {
+        ...this._state.newComment,
+        emotion,
+      },
+    });
+    this.#updateViewData();
+  };
+
+  #commentsInputHandler = (evt) => {
+    const value = evt.target.value;
+
+    this._setState({
+      newComment: {
+        ...this._state.newComment,
+        comment: value,
+      },
+    });
+    this.#updateViewData();
+  };
+
+  _restoreHandlers = () => {
+    this.setScrollPosition();
+    this.#setInnerHandlers();
+    this.setCloseClickHandler(this._callback.closeClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setWatchListClickHandler(this._callback.watchListClick);
+    this.setWatchedClickHandler(this._callback.watchedClick);
+    this.setCommentsFormSubmitHandler(this._callback.commentsFormSubmit);
+    this.setCommentRemoveHandler(this._callback.removeBtnClick);
+  };
 
   setCloseClickHandler = (callback) => {
     this._callback.closeClick = callback;
@@ -27,7 +142,7 @@ export default class FilmsPopup extends AbstractView {
     this._callback.closeClick();
   };
 
-  setFavotiteClickHandler = (callback) => {
+  setFavoriteClickHandler = (callback) => {
     this._callback.favoriteClick = callback;
     this.element
       .querySelector('.film-details__control-button--favorite')
@@ -36,7 +151,8 @@ export default class FilmsPopup extends AbstractView {
 
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.favoriteClick(this.#film);
+    this.#updateViewData();
+    this._callback.favoriteClick(this._state.film);
   };
 
   setWatchListClickHandler = (callback) => {
@@ -48,7 +164,8 @@ export default class FilmsPopup extends AbstractView {
 
   #watchListClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.watchListClick(this.#film);
+    this.#updateViewData();
+    this._callback.watchListClick(this._state.film);
   };
 
   setWatchedClickHandler = (callback) => {
@@ -60,6 +177,7 @@ export default class FilmsPopup extends AbstractView {
 
   #watchedClickHandler = (evt) => {
     evt.preventDefault();
-    this._callback.watchedClick(this.#film);
+    this.#updateViewData();
+    this._callback.watchedClick(this._state.film);
   };
 }

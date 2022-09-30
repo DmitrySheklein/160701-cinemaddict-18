@@ -15,7 +15,7 @@ const createFilmsCardTemplate = ({ filmInfo, comments, userDetails }) => {
         <span class="film-card__duration">${HumanizeDate.FilmDuration(runtime)}</span>
         <span class="film-card__genre">${genre[0]}</span>
       </p>
-      <img src="${`.${imgSrc}`}" alt="" class="film-card__poster">
+      <img src="${imgSrc}" alt="" class="film-card__poster">
       <p class="film-card__description">${description}</p>
       <span class="film-card__comments">${commentsText}</span>
     </a>

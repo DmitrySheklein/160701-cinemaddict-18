@@ -1,6 +1,7 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
+import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 
 export default class FilmPopupPresenter {
   #siteBodyElement = document.body;
@@ -9,6 +10,8 @@ export default class FilmPopupPresenter {
   #commentsModel = null;
   #changeData = null;
   #film = null;
+
+  #viewData = { ...DEFAULT_VIEW_POPUP_DATA };
 
   constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
@@ -22,11 +25,20 @@ export default class FilmPopupPresenter {
   init = (film) => {
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
+    this.#checkClearComments(prevPopupComponent, this.#film);
     const comments = this.#commentsModel.get(this.#film);
-    this.#filmPopup = new FilmsPopup(this.#film, comments);
+    this.#filmPopup = new FilmsPopup(
+      this.#film,
+      comments,
+      this.#viewData.newComment,
+      this.#viewData.scrollPosition,
+      this.#updateViewData,
+    );
     this.#siteBodyElement.classList.add(this.#bodyHiddenClass);
+    this.#filmPopup.setCommentRemoveHandler(this.#onCommentBtnRemoveClick);
+    this.#filmPopup.setCommentsFormSubmitHandler(this.#onCommentsFormSubmit);
     this.#filmPopup.setCloseClickHandler(this.#removePopup);
-    this.#filmPopup.setFavotiteClickHandler(this.#onFavoriteBtnClick);
+    this.#filmPopup.setFavoriteClickHandler(this.#onFavoriteBtnClick);
     this.#filmPopup.setWatchListClickHandler(this.#onWatchListBtnClick);
     this.#filmPopup.setWatchedClickHandler(this.#onWatchedBtnClick);
     document.addEventListener('keydown', this.#onEscKeyDown);
@@ -42,6 +54,33 @@ export default class FilmPopupPresenter {
     }
 
     remove(prevPopupComponent);
+  };
+
+  #checkClearComments = (popupComponent, currentFilm) => {
+    const PopupComponentId = {
+      prev: popupComponent?.currentFilm?.id,
+      current: currentFilm.id,
+    };
+
+    if (PopupComponentId.prev !== PopupComponentId.current) {
+      this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
+    }
+  };
+
+  #updateViewData = (viewData) => {
+    this.#viewData = { ...viewData };
+  };
+
+  #onCommentsFormSubmit = () => {
+    // console.log(newComment);
+  };
+
+  #onCommentBtnRemoveClick = (comments) => {
+    const updatedFilm = {
+      ...this.#film,
+      comments: comments.map((el) => el.id),
+    };
+    this.#changeData(updatedFilm);
   };
 
   #onEscKeyDown = (evt) => {
@@ -61,6 +100,7 @@ export default class FilmPopupPresenter {
     };
     this.#changeData(updatedFilm);
     this.init(updatedFilm);
+    this.#filmPopup.setScrollPosition();
   };
 
   #onWatchListBtnClick = () => {
@@ -73,6 +113,7 @@ export default class FilmPopupPresenter {
     };
     this.#changeData(updatedFilm);
     this.init(updatedFilm);
+    this.#filmPopup.setScrollPosition();
   };
 
   #onWatchedBtnClick = () => {
@@ -85,6 +126,7 @@ export default class FilmPopupPresenter {
     };
     this.#changeData(updatedFilm);
     this.init(updatedFilm);
+    this.#filmPopup.setScrollPosition();
   };
 
   #removePopup = () => {
@@ -95,5 +137,6 @@ export default class FilmPopupPresenter {
       this.#film = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);
+    this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
   };
 }
