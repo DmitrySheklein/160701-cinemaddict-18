@@ -4,5 +4,7 @@ import Observable from '../framework/observable';
 export default class FilmsModel extends Observable {
   #films = generateFilms();
 
-  get = () => this.#films;
+  get films() {
+    return this.#films;
+  }
 }
