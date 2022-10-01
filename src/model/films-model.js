@@ -18,4 +18,9 @@ export default class FilmsModel extends Observable {
     this.#films = [...this.#films.slice(0, index), update, ...this.#films.slice(index + 1)];
     this._notify(updateType, update);
   };
+
+  createFilms = (updateType, update) => {
+    this.#films = [...update];
+    this._notify(updateType, update);
+  };
 }
