@@ -4,9 +4,9 @@ import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import SortView from '../view/sort-view';
-import { StatusMap } from '../main-const';
+import { StatusTitleMap } from '../main-const';
 import FilmPresenter from './film-presenter';
-import { SortType, UserAction, UpdateType } from '../main-const';
+import { SortType, UserAction, UpdateType, NavigationType } from '../main-const';
 import { sortFilmsDate, sortFilmsRating } from '../util';
 import FilmPopupPresenter from './film-popup-presenter';
 import { NavigationFilter } from '../util';
@@ -28,6 +28,7 @@ export default class FilmsPresenter {
   #renderedFilmCount = FILM_COUNT_PER_STEP;
   #filmPresenter = new Map();
   #currentFilmSort = SortType.DEFAULT;
+  #navigationType = NavigationType.ALL.id;
   #filmPopupPresenter = null;
 
   constructor(mainContainer, filmsModel, commentsModel, navigationModel) {
@@ -41,9 +42,9 @@ export default class FilmsPresenter {
   }
 
   get films() {
-    const navigationType = this.#navigationModel.currentNav;
+    this.#navigationType = this.#navigationModel.currentNav;
     const films = this.#filmsModel.films;
-    const filteredFilms = NavigationFilter[navigationType](films);
+    const filteredFilms = NavigationFilter[this.#navigationType](films);
 
     switch (this.#currentFilmSort) {
       case SortType.DATE:
@@ -67,7 +68,7 @@ export default class FilmsPresenter {
     }
     render(this.#filmsListSection, this.#mainContainer);
     if (!filmsCount) {
-      this.#renderFilmsListTitle({ titleText: StatusMap['All movies'] });
+      this.#renderFilmsListTitle({ titleText: StatusTitleMap[this.#navigationType] });
 
       return;
     }
