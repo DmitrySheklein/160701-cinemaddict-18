@@ -5,13 +5,20 @@ const createNavigationTemplate = (navigationArray) => `
   ${navigationArray
     .map(
       ({ filterId, filterName, filterCount }) =>
-        `<a href="#${filterId}" class="main-navigation__item ${
-          filterId === 'all' ? 'main-navigation__item--active' : ''
-        }">${filterName} ${
-          filterId !== 'all'
-            ? `<span class="main-navigation__item-count">${filterCount}</span>`
-            : ''
-        }</a>`,
+        `<a
+           href="#${filterId}"
+           class="main-navigation__item
+           ${filterId === 'all' ? 'main-navigation__item--active' : ''}"
+          >
+          ${filterName}
+
+          <span
+            class="main-navigation__item-count"
+            style="${filterId === 'all' ? 'display:none' : ''}"
+          >
+            ${filterCount}
+          </span>
+        </a>`,
     )
     .join('')}
 </nav>
