@@ -202,6 +202,8 @@ export default class FilmsPresenter {
         this.#renderFilmsBoard();
         break;
       case UpdateType.MAJOR:
+        this.#clearFilmsBoard({ resetRenderedFilmCount: true, resetSortType: true });
+        this.#renderFilmsBoard();
         break;
     }
   };
