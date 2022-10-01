@@ -8,7 +8,7 @@ import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import SortView from '../view/sort-view';
 import { StatusMap } from '../main-const';
 import FilmPresenter from './film-presenter';
-import { SortType } from '../main-const';
+import { SortType, UserAction, UpdateType } from '../main-const';
 import { sortFilmsDate, sortFilmsRating } from '../util';
 import FilmPopupPresenter from './film-popup-presenter';
 
@@ -146,16 +146,31 @@ export default class FilmsPresenter {
   #handleFilmChange = (updatedFilm) => {
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
 
-    if (this.#filmPopupPresenter.currentFilm) {
+    if (this.#filmPopupPresenter?.currentFilm) {
       this.#filmPopupPresenter.init(updatedFilm);
     }
   };
 
   #handleViewAction = (actionType, updateType, update) => {
     console.log(actionType, updateType, update);
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        this.#filmsModel.updateFilm(updateType, update);
+        break;
+    }
   };
 
   #handleModelEvent = (updateType, data) => {
     console.log(updateType, data);
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#filmPresenter.get(data.id).init(data);
+        break;
+
+      case UpdateType.MINOR:
+        break;
+      case UpdateType.MAJOR:
+        break;
+    }
   };
 }

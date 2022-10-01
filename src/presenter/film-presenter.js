@@ -38,7 +38,7 @@ export default class FilmPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -48,7 +48,7 @@ export default class FilmPresenter {
   };
 
   #onWatchListBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -58,7 +58,7 @@ export default class FilmPresenter {
   };
 
   #onWatchedBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -68,9 +68,9 @@ export default class FilmPresenter {
   };
 
   #onFilmCardClick = (film) => {
-    const currentFilm = this.#filmPopupPresenter.currentFilm;
+    const currentFilm = this.#filmPopupPresenter?.currentFilm;
 
-    if (currentFilm?.id !== film.id) {
+    if (currentFilm && currentFilm?.id !== film.id) {
       this.#filmPopupPresenter.init(film);
     }
   };
