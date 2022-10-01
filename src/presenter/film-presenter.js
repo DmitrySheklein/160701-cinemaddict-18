@@ -38,7 +38,7 @@ export default class FilmPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -48,7 +48,7 @@ export default class FilmPresenter {
   };
 
   #onWatchListBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
@@ -58,7 +58,7 @@ export default class FilmPresenter {
   };
 
   #onWatchedBtnClick = () => {
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,

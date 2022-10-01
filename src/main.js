@@ -14,7 +14,12 @@ const siteFooterElement = document.querySelector('.footer');
 const filmsModel = new FilmsModel();
 const navigationModel = new NavigationModel();
 const commentsModel = new CommentsModel(filmsModel);
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
+const filmsPresenter = new FilmsPresenter(
+  siteMainElement,
+  filmsModel,
+  commentsModel,
+  navigationModel,
+);
 const navigationPresenter = new NavigationPresenter(siteMainElement, navigationModel, filmsModel);
 const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
