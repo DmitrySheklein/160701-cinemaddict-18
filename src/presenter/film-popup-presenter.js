@@ -2,6 +2,7 @@ import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
 import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
+import { UserAction, UpdateType } from '../main-const';
 
 export default class FilmPopupPresenter {
   #siteBodyElement = document.body;
@@ -75,12 +76,13 @@ export default class FilmPopupPresenter {
     // console.log(newComment);
   };
 
-  #onCommentBtnRemoveClick = (comments) => {
+  #onCommentBtnRemoveClick = (commentsId) => {
     const updatedFilm = {
       ...this.#film,
-      comments: comments.map((el) => el.id),
+      comments: this.#film.comments.filter((id) => id !== commentsId),
     };
-    this.#changeData(updatedFilm);
+
+    this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, updatedFilm, commentsId);
   };
 
   #onEscKeyDown = (evt) => {
@@ -98,7 +100,7 @@ export default class FilmPopupPresenter {
         favorite: !this.#film.userDetails.favorite,
       },
     };
-    this.#changeData(updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };
@@ -111,7 +113,7 @@ export default class FilmPopupPresenter {
         watchlist: !this.#film.userDetails.watchlist,
       },
     };
-    this.#changeData(updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };
@@ -124,7 +126,7 @@ export default class FilmPopupPresenter {
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
     };
-    this.#changeData(updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };

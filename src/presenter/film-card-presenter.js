@@ -2,7 +2,7 @@ import { render, remove, replace } from '../framework/render';
 import FilmsCard from '../view/film-card';
 import { UserAction, UpdateType } from '../main-const';
 
-export default class FilmPresenter {
+export default class FilmCardPresenter {
   #container = null;
   #film = null;
   #filmComponent = null;
@@ -69,8 +69,7 @@ export default class FilmPresenter {
 
   #onFilmCardClick = (film) => {
     const currentFilm = this.#filmPopupPresenter?.currentFilm;
-
-    if (currentFilm && currentFilm?.id !== film.id) {
+    if (currentFilm?.id !== film.id) {
       this.#filmPopupPresenter.init(film);
     }
   };

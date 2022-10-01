@@ -91,7 +91,8 @@ export default class FilmsPopup extends AbstractStatefulView {
       this.updateElement({
         comments: this._state.comments.filter((el) => el.id !== removedId),
       });
-      this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
+      // this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
+      this._callback.removeBtnClick(removedId);
     }
   };
 

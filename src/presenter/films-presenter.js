@@ -5,7 +5,7 @@ import FilmsListTitle from '../view/films-list/films-list-title-view';
 import FilmsShowMoreBtn from '../view/films-show-more-btn-view';
 import SortView from '../view/sort-view';
 import { StatusTitleMap } from '../main-const';
-import FilmPresenter from './film-presenter';
+import FilmCardPresenter from './film-card-presenter';
 import { SortType, UserAction, UpdateType, NavigationType } from '../main-const';
 import { sortFilmsDate, sortFilmsRating } from '../util';
 import FilmPopupPresenter from './film-popup-presenter';
@@ -38,7 +38,7 @@ export default class FilmsPresenter {
     this.#commentsModel = commentsModel;
     this.#navigationModel = navigationModel;
     this.#navigationModel.addObserver(this.#handleModelEvent);
-    this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleFilmChange);
+    this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleViewAction);
   }
 
   get films() {
@@ -130,13 +130,13 @@ export default class FilmsPresenter {
   };
 
   #renderFilm = (film) => {
-    const filmPresenter = new FilmPresenter(
+    const filmCardPresenter = new FilmCardPresenter(
       this.#filmsListContainer.element,
       this.#filmPopupPresenter,
       this.#handleViewAction,
     );
-    filmPresenter.init(film);
-    this.#filmPresenter.set(film.id, filmPresenter);
+    filmCardPresenter.init(film);
+    this.#filmPresenter.set(film.id, filmCardPresenter);
   };
 
   #clearFilmsBoard = ({ resetRenderedFilmCount = false, resetSortType = false } = {}) => {
@@ -163,6 +163,7 @@ export default class FilmsPresenter {
   };
 
   #handleFilmChange = (updatedFilm) => {
+    console.log(updatedFilm);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
 
     if (this.#filmPopupPresenter?.currentFilm) {
@@ -170,17 +171,21 @@ export default class FilmsPresenter {
     }
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
+  #handleViewAction = (actionType, updateType, updateFilm, updateComment) => {
+    console.log(actionType, updateType, updateFilm, updateComment);
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this.#filmsModel.updateFilm(updateType, update);
+        this.#filmsModel.updateFilm(updateType, updateFilm);
+        break;
+      case UserAction.DELETE_COMMENT:
+        this.#commentsModel.deleteComment(updateType, updateComment);
+        this.#filmsModel.updateFilm(updateType, updateFilm);
         break;
     }
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
+    console.log('updateType', updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         this.#filmPresenter.get(data.id).init(data);
