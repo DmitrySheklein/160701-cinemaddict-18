@@ -1,38 +1,59 @@
 import AbstractView from '../framework/view/abstract-view';
+import { NavigationType } from '../main-const';
 
-const createNavigationTemplate = (navigationArray) => `
-<nav class="main-navigation">
-  ${navigationArray
-    .map(
-      ({ filterId, filterName, filterCount }) =>
-        `<a
-           href="#${filterId}"
-           class="main-navigation__item
-           ${filterId === 'all' ? 'main-navigation__item--active' : ''}"
-          >
-          ${filterName}
+const createNavigationTemplate = (navigationArray, current = NavigationType.ALL.id) => {
+  const isActiveClass = (type) => (type === current ? 'main-navigation__item--active' : '');
 
-          <span
-            class="main-navigation__item-count"
-            style="${filterId === 'all' ? 'display:none' : ''}"
-          >
-            ${filterCount}
-          </span>
-        </a>`,
-    )
-    .join('')}
-</nav>
-`;
+  return `
+  <nav class="main-navigation">
+    ${navigationArray
+      .map(
+        ({ type, name, count }) =>
+          `<a
+             href="#${type}"
+             class="main-navigation__item
+             ${isActiveClass(type)}"
+            >
+            ${name}
+
+            <span
+              class="main-navigation__item-count"
+              style="${type === NavigationType.ALL.id ? 'display:none' : ''}"
+            >
+              ${count}
+            </span>
+          </a>`,
+      )
+      .join('')}
+  </nav>
+  `;
+};
 
 export default class NavigationView extends AbstractView {
   #filmsNavigation = null;
+  #currentNav = null;
 
-  constructor(filmsNavigation) {
+  constructor(filmsNavigation, currentNav) {
     super();
     this.#filmsNavigation = filmsNavigation;
+    this.#currentNav = currentNav;
   }
 
   get template() {
-    return createNavigationTemplate(this.#filmsNavigation);
+    return createNavigationTemplate(this.#filmsNavigation, this.#currentNav);
   }
+
+  setNavItemClick = (callback) => {
+    this._callback.click = callback;
+    this.element.addEventListener('click', this.#navItemClick);
+  };
+
+  #navItemClick = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
+    evt.preventDefault();
+    const type = evt.target.href.split('#')[1];
+    this._callback.click(type);
+  };
 }

@@ -4,6 +4,7 @@ import FooterStatisticsView from './view/footer-statistics-view';
 import FilmsPresenter from './presenter/films-presenter';
 import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
+import NavigationView from './view/navigation-view';
 
 const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = document.querySelector('.header');
@@ -14,6 +15,14 @@ const commentsModel = new CommentsModel(filmsModel);
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
 const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
+const navigation = [
+  {
+    type: 'all',
+    name: 'All movies',
+    count: 0,
+  },
+];
+render(new NavigationView(navigation, 'all'), siteMainElement);
 render(new ProfileView(), siteHeaderElement);
 filmsPresenter.init();
 render(new FooterStatisticsView(), siteFooterStatistics);

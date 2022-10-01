@@ -1,6 +1,4 @@
 import { render, remove } from '../framework/render';
-import NavigationView from '../view/navigation-view';
-import { generateNavigation } from '../mock/navigation';
 import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
@@ -49,7 +47,6 @@ export default class FilmsPresenter {
   }
 
   init = () => {
-    this.#renderNavigation();
     this.#renderFilmsBoard();
   };
 
@@ -78,12 +75,6 @@ export default class FilmsPresenter {
   };
 
   #renderFilms = (films) => films.forEach(this.#renderFilm);
-
-  #renderNavigation = () => {
-    const filmsNavigation = generateNavigation(this.#filmsModel.films);
-
-    render(new NavigationView(filmsNavigation), this.#mainContainer);
-  };
 
   #renderFilmsListTitle = (config) => {
     this.#filmListTitle = new FilmsListTitle(config);
