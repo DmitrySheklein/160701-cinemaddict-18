@@ -66,14 +66,13 @@ export default class FilmsPresenter {
     if (filmsCount) {
       this.#renderSort();
     }
-
+    render(this.#filmsListSection, this.#mainContainer);
     if (!filmsCount) {
       this.#renderFilmsListTitle({ titleText: StatusTitleMap[this.#navigationType] });
 
       return;
     }
 
-    render(this.#filmsListSection, this.#mainContainer);
     this.#renderFilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true });
 
     render(this.#filmsListContainer, this.#filmsListSection.element);
@@ -149,6 +148,7 @@ export default class FilmsPresenter {
     remove(this.#filmsShowMoreBtn);
     remove(this.#sortView);
     remove(this.#filmListTitle);
+    remove(this.#filmsListSection);
     remove(this.#filmsListContainer);
 
     if (resetRenderedFilmCount) {
