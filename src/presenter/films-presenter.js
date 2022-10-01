@@ -68,7 +68,6 @@ export default class FilmsPresenter {
     }
 
     this.#renderFilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true });
-    // this.#renderFilmsList();
 
     render(this.#filmsListContainer, this.#filmsListSection.element);
     this.#renderFilms(films.slice(0, Math.min(filmsCount, this.#renderedFilmCount)));
@@ -79,18 +78,6 @@ export default class FilmsPresenter {
   };
 
   #renderFilms = (films) => films.forEach(this.#renderFilm);
-
-  #renderFilmsList = () => {
-    const filmsCount = this.films.length;
-    const films = this.films.slice(0, Math.min(filmsCount, this.#renderedFilmCount));
-
-    render(this.#filmsListContainer, this.#filmsListSection.element);
-    this.#renderFilms(films);
-
-    if (this.#renderedFilmCount < filmsCount) {
-      this.#renderShowMoreBtn();
-    }
-  };
 
   #renderNavigation = () => {
     const filmsNavigation = generateNavigation(this.#filmsModel.films);
