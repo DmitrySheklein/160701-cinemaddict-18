@@ -5,6 +5,18 @@ const createFilmsCardTemplate = ({ filmInfo, comments, userDetails }) => {
   const { title, totalRating, year, description, genre, imgSrc, runtime } = filmInfo;
 
   const commentsText = `${comments.length} comment${comments.length > 1 ? 's' : ''}`;
+  const cutLongDescription = (descriptionText) => {
+    const MAX_DESCRIPTION_LENGTH = 140;
+
+    if (descriptionText.length >= MAX_DESCRIPTION_LENGTH) {
+      let newStr = descriptionText.slice(0, MAX_DESCRIPTION_LENGTH - 1);
+      newStr += '...';
+
+      return newStr;
+    }
+
+    return descriptionText;
+  };
 
   return `<article class="film-card">
     <a class="film-card__link">
@@ -16,7 +28,7 @@ const createFilmsCardTemplate = ({ filmInfo, comments, userDetails }) => {
         <span class="film-card__genre">${genre[0]}</span>
       </p>
       <img src="${imgSrc}" alt="" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${cutLongDescription(description)}</p>
       <span class="film-card__comments">${commentsText}</span>
     </a>
     ${createFilmCardControls(userDetails)}
