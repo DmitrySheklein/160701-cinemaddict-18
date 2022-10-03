@@ -49,11 +49,12 @@ export default class NavigationView extends AbstractView {
   };
 
   #navItemClick = (evt) => {
-    if (evt.target.tagName !== 'A') {
-      return;
-    }
     evt.preventDefault();
-    const type = evt.target.href.split('#')[1];
-    this._callback.click(type);
+    const el = evt.target.closest('a');
+
+    if (el) {
+      const type = el.href.split('#')[1];
+      this._callback.click(type);
+    }
   };
 }
