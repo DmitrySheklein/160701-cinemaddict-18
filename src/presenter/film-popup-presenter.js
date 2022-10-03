@@ -3,6 +3,7 @@ import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
 import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 import { UserAction, UpdateType } from '../main-const';
+import { nanoid } from 'nanoid';
 
 export default class FilmPopupPresenter {
   #siteBodyElement = document.body;
@@ -69,11 +70,23 @@ export default class FilmPopupPresenter {
   };
 
   #updateViewData = (viewData) => {
+    console.log('viewData', viewData);
     this.#viewData = { ...viewData };
   };
 
-  #onCommentsFormSubmit = () => {
-    // console.log(newComment);
+  #onCommentsFormSubmit = (newCommentPart) => {
+    console.log('newComment', newCommentPart);
+    const id = nanoid();
+    const updatedFilm = {
+      ...this.#film,
+      comments: [...this.#film.comments, id],
+    };
+    const newComment = {
+      ...newCommentPart,
+      id,
+      date: new Date(),
+    };
+    this.#changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, updatedFilm, newComment);
   };
 
   #onCommentBtnRemoveClick = (commentsId) => {

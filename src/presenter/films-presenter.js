@@ -181,6 +181,10 @@ export default class FilmsPresenter {
         this.#commentsModel.deleteComment(updateType, updateComment);
         this.#filmsModel.updateFilm(updateType, updateFilm);
         break;
+      case UserAction.ADD_COMMENT:
+        this.#commentsModel.addComment(updateType, updateComment);
+        this.#filmsModel.updateFilm(updateType, updateFilm);
+        break;
     }
   };
 
@@ -189,6 +193,9 @@ export default class FilmsPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this.#filmPresenter.get(data.id).init(data);
+        if (this.#filmPopupPresenter?.currentFilm) {
+          this.#filmPopupPresenter.init(data);
+        }
         break;
 
       case UpdateType.MINOR:
