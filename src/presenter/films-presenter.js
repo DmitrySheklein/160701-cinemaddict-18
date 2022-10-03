@@ -162,18 +162,19 @@ export default class FilmsPresenter {
     }
   };
 
-  #handleViewAction = (actionType, updateType, updateFilm, updateComment) => {
+  #handleViewAction = (actionType, updateType, data) => {
+    const { updatedFilm, newCommentPart, commentDelId, filmId } = data;
+
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this.#filmsModel.updateFilm(updateType, updateFilm);
+        this.#filmsModel.updateFilm(updateType, updatedFilm);
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(updateType, updateComment);
-        this.#filmsModel.updateFilm(updateType, updateFilm);
+        this.#commentsModel.deleteComment(updateType, commentDelId);
+        this.#filmsModel.updateFilm(updateType, updatedFilm);
         break;
       case UserAction.ADD_COMMENT:
-        this.#commentsModel.addComment(updateType, updateComment);
-        this.#filmsModel.updateFilm(updateType, updateFilm);
+        this.#commentsModel.addComment(updateType, { newCommentPart, filmId });
         break;
     }
   };
@@ -184,6 +185,9 @@ export default class FilmsPresenter {
         this.#filmPresenter.get(data.id).init(data);
         if (this.#filmPopupPresenter?.currentFilm) {
           this.#filmPopupPresenter.init(data);
+        }
+        if (this.#navigationModel.currentNav !== NavigationType.ALL.id) {
+          this.#handleModelEvent(UpdateType.MINOR);
         }
         break;
       case UpdateType.MINOR:

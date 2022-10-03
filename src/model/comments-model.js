@@ -1,5 +1,9 @@
 import { generateComments } from '../mock/comments';
 import Observable from '../framework/observable';
+import { nanoid } from 'nanoid';
+import { Random, generatePerson } from '../util';
+import { names, surnames } from '../mock/const';
+import { UpdateType } from '../main-const';
 
 export default class CommentsModel extends Observable {
   #filmsModel = null;
@@ -26,9 +30,23 @@ export default class CommentsModel extends Observable {
 
   getComments = () => this.#comments;
 
-  addComment = (updateType, comment) => {
-    this.#allComments.push(comment);
-    this._notify(updateType, comment);
+  addComment = (updateType, { newCommentPart, filmId }) => {
+    const newCommentId = nanoid();
+    const newComment = {
+      ...newCommentPart,
+      id: newCommentId,
+      author: generatePerson(names, surnames),
+      date: Random.date(),
+    };
+    this.#allComments.push(newComment);
+
+    const film = this.#filmsModel.films.find((el) => el.id === filmId);
+    if (film) {
+      const newFilm = { ...film, comments: [...film.comments, newCommentId] };
+      this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm);
+    }
+
+    this._notify(updateType, newComment);
   };
 
   deleteComment = (updateType, commentId) => {

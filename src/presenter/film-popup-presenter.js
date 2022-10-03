@@ -74,17 +74,10 @@ export default class FilmPopupPresenter {
   };
 
   #onCommentsFormSubmit = (newCommentPart) => {
-    const id = nanoid();
-    const updatedFilm = {
-      ...this.#film,
-      comments: [...this.#film.comments, id],
-    };
-    const newComment = {
-      ...newCommentPart,
-      id,
-      date: new Date(),
-    };
-    this.#changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, updatedFilm, newComment);
+    this.#changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, {
+      newCommentPart,
+      filmId: this.#film.id,
+    });
   };
 
   #onCommentBtnRemoveClick = (commentsId) => {
@@ -93,7 +86,10 @@ export default class FilmPopupPresenter {
       comments: this.#film.comments.filter((id) => id !== commentsId),
     };
 
-    this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, updatedFilm, commentsId);
+    this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, {
+      commentsDelId: commentsId,
+      updatedFilm,
+    });
   };
 
   #onEscKeyDown = (evt) => {
@@ -111,7 +107,7 @@ export default class FilmPopupPresenter {
         favorite: !this.#film.userDetails.favorite,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };
@@ -124,7 +120,7 @@ export default class FilmPopupPresenter {
         watchlist: !this.#film.userDetails.watchlist,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };
@@ -137,7 +133,7 @@ export default class FilmPopupPresenter {
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, updatedFilm);
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
     this.init(updatedFilm);
     this.#filmPopup.setScrollPosition();
   };
