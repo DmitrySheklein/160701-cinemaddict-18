@@ -1,7 +1,9 @@
 import { NavigationType } from './main-const';
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
+import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(objectSupport);
+dayjs.extend(relativeTime);
 
 class Random {
   static int(min, max) {
@@ -78,6 +80,10 @@ class HumanizeDate {
 
   static Comment(date) {
     return dayjs(date).format('YYYY/MM/DD HH:mm');
+  }
+
+  static FromNow(date) {
+    return dayjs(date).fromNow();
   }
 }
 const generatePerson = (namesArray = [], surnamesArray = []) =>
