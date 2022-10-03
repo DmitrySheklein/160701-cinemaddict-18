@@ -1,7 +1,7 @@
 import { HumanizeDate } from '../../util';
 
 const createComment = (commentItem) => {
-  const { id, comment, emotion, author, date } = commentItem;
+  const { id, comment, emotion, author = '', date } = commentItem;
 
   return `
     <li class="film-details__comment" data-id="${id}">
