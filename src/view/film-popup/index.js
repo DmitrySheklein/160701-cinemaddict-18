@@ -66,12 +66,11 @@ export default class FilmsPopup extends AbstractStatefulView {
 
     if (isSubmit || isCtrlEnter) {
       evt.preventDefault();
-      this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
-      //TODO выполнять сборос формы при отправке
       this.updateViewData({
         newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
         scrollPosition: this._state.scrollPosition,
       });
+      this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }
   };
 
