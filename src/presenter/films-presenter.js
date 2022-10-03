@@ -162,17 +162,7 @@ export default class FilmsPresenter {
     }
   };
 
-  #handleFilmChange = (updatedFilm) => {
-    console.log(updatedFilm);
-    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
-
-    if (this.#filmPopupPresenter?.currentFilm) {
-      this.#filmPopupPresenter.init(updatedFilm);
-    }
-  };
-
   #handleViewAction = (actionType, updateType, updateFilm, updateComment) => {
-    console.log(actionType, updateType, updateFilm, updateComment);
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, updateFilm);
@@ -189,7 +179,6 @@ export default class FilmsPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log('updateType', updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         this.#filmPresenter.get(data.id).init(data);
@@ -197,7 +186,6 @@ export default class FilmsPresenter {
           this.#filmPopupPresenter.init(data);
         }
         break;
-
       case UpdateType.MINOR:
         this.#clearFilmsBoard();
         this.#renderFilmsBoard();

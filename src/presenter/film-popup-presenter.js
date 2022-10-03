@@ -70,12 +70,10 @@ export default class FilmPopupPresenter {
   };
 
   #updateViewData = (viewData) => {
-    console.log('viewData', viewData);
     this.#viewData = { ...viewData };
   };
 
   #onCommentsFormSubmit = (newCommentPart) => {
-    console.log('newComment', newCommentPart);
     const id = nanoid();
     const updatedFilm = {
       ...this.#film,
