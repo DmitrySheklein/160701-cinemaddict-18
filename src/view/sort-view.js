@@ -6,17 +6,21 @@ const createSortTemplate = (sortType = SortType.DEFAULT) => {
 
   return `
 <ul class="sort">
-  <li><a href="#" data-sort-type="${SortType.DEFAULT}" class="sort__button ${isActiveClass(
-  SortType.DEFAULT,
-)}">Sort by default</a></li>
-  <li><a href="#" data-sort-type="${SortType.DATE}" class="sort__button ${isActiveClass(
-  SortType.DATE,
-)}">Sort by date</a></li>
-  <li><a href="#" data-sort-type="${SortType.RATING}" class="sort__button ${isActiveClass(
-  SortType.RATING,
-)}">Sort by rating</a></li>
-</ul>
-`;
+  ${Object.values(SortType)
+    .map(
+      (value) =>
+        `<li>
+          <a
+            href="#"
+            data-sort-type="${value}"
+            class="sort__button ${isActiveClass(value)}"
+          >
+          Sort by ${value}
+          </a>
+        </li>`,
+    )
+    .join('')}
+</ul>`;
 };
 
 export default class SortView extends AbstractView {

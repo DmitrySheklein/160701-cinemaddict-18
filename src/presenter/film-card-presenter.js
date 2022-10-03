@@ -1,7 +1,8 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsCard from '../view/film-card';
+import { UserAction, UpdateType } from '../main-const';
 
-export default class FilmPresenter {
+export default class FilmCardPresenter {
   #container = null;
   #film = null;
   #filmComponent = null;
@@ -37,38 +38,41 @@ export default class FilmPresenter {
   };
 
   #onFavoriteBtnClick = () => {
-    this.#changeData({
+    const updatedFilm = {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
         favorite: !this.#film.userDetails.favorite,
       },
-    });
+    };
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
   };
 
   #onWatchListBtnClick = () => {
-    this.#changeData({
+    const updatedFilm = {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
         watchlist: !this.#film.userDetails.watchlist,
       },
-    });
+    };
+
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
   };
 
   #onWatchedBtnClick = () => {
-    this.#changeData({
+    const updatedFilm = {
       ...this.#film,
       userDetails: {
         ...this.#film.userDetails,
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
-    });
+    };
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
   };
 
   #onFilmCardClick = (film) => {
-    const currentFilm = this.#filmPopupPresenter.currentFilm;
-
+    const currentFilm = this.#filmPopupPresenter?.currentFilm;
     if (currentFilm?.id !== film.id) {
       this.#filmPopupPresenter.init(film);
     }

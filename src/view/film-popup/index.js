@@ -51,13 +51,25 @@ export default class FilmsPopup extends AbstractStatefulView {
 
   setCommentsFormSubmitHandler = (callback) => {
     this._callback.commentsFormSubmit = callback;
+
     this.element
       .querySelector('form.film-details__new-comment')
       .addEventListener('keydown', this.#commentsFormSubmitHandler);
+    this.element
+      .querySelector('form.film-details__new-comment')
+      .addEventListener('submit', this.#commentsFormSubmitHandler);
   };
 
   #commentsFormSubmitHandler = (evt) => {
-    if ((evt.ctrlKey || evt.metaKey) && evt.key === 'Enter') {
+    const isSubmit = evt.type === 'submit';
+    const isCtrlEnter = (evt.ctrlKey || evt.metaKey) && evt.key === 'Enter';
+
+    if (isSubmit || isCtrlEnter) {
+      evt.preventDefault();
+      this.updateViewData({
+        newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
+        scrollPosition: this._state.scrollPosition,
+      });
       this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }
   };
@@ -91,7 +103,8 @@ export default class FilmsPopup extends AbstractStatefulView {
       this.updateElement({
         comments: this._state.comments.filter((el) => el.id !== removedId),
       });
-      this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
+      // this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
+      this._callback.removeBtnClick(removedId);
     }
   };
 
