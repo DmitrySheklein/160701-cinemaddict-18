@@ -49,19 +49,15 @@ const generateFilmCard = () => ({
 
 const generateFilms = () => {
   const films = Array.from({ length: FILM_CARD_COUNT }, generateFilmCard);
-  let totalCommentCount = 0;
 
   return films.map((film) => {
     const hasComments = Random.int(0, 1);
     const filmsCommentCount = hasComments ? Random.int(1, MAX_COMMENTS_COUNT) : 0;
-    totalCommentCount += filmsCommentCount;
 
     return {
       ...film,
       id: nanoid(),
-      comments: Array.from({ length: filmsCommentCount }, (_value, commentIndex) =>
-        String(totalCommentCount - commentIndex),
-      ),
+      comments: Array.from({ length: filmsCommentCount }, () => nanoid()),
     };
   });
 };

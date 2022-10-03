@@ -8,17 +8,16 @@ const generateComment = () => ({
   author: generatePerson(names, surnames),
   date: Random.date(),
 });
-const getCommentsCount = (films) =>
-  films.reduce((count, film) => (count += film.comments.length), 0);
 
+const getCommentsIdMap = (films) =>
+  films.reduce((acc, film) => (acc = [...acc, ...film.comments]), []);
 const generateComments = (films) => {
-  const commentsCount = getCommentsCount(films);
+  const commentsIdMap = getCommentsIdMap(films);
 
-  return Array.from({ length: commentsCount }, (_value, index) => {
+  return commentsIdMap.map((id) => {
     const commentItem = generateComment();
-
     return {
-      id: String(index + 1),
+      id,
       ...commentItem,
     };
   });
