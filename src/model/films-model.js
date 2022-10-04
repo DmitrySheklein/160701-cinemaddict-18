@@ -1,5 +1,6 @@
 import { generateFilms } from '../mock/film';
 import Observable from '../framework/observable';
+import { TransformKeysObject } from '../util';
 
 export default class FilmsModel extends Observable {
   #films = generateFilms();
@@ -8,7 +9,7 @@ export default class FilmsModel extends Observable {
   constructor(filmsApiService) {
     super();
     this.#filmsApiService = filmsApiService;
-    this.#filmsApiService.films.then(console.log);
+    this.#filmsApiService.films.then((films) => films.map(this.#adaptToClient));
   }
 
   get films() {
@@ -29,5 +30,11 @@ export default class FilmsModel extends Observable {
   createFilms = (updateType, update) => {
     this.#films = [...update];
     this._notify(updateType, update);
+  };
+
+  #adaptToClient = (film) => {
+    const adaptedFilm = new TransformKeysObject(film).toCamelCase();
+
+    return adaptedFilm;
   };
 }
