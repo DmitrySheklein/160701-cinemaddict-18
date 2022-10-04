@@ -1,3 +1,5 @@
+const END_POINT = 'https://18.ecmascript.pages.academy/cinemaddict/';
+const AUTHORIZATION = 'Basic 132dds2Z';
 const MAX_COMMENTS_COUNT = 5;
 const NavigationType = {
   ALL: {
@@ -47,6 +49,8 @@ const UpdateType = {
 };
 
 export {
+  END_POINT,
+  AUTHORIZATION,
   UpdateType,
   UserAction,
   StatusTitleMap,

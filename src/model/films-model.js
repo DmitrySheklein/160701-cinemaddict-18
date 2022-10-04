@@ -3,6 +3,13 @@ import Observable from '../framework/observable';
 
 export default class FilmsModel extends Observable {
   #films = generateFilms();
+  #filmsApiService = null;
+
+  constructor(filmsApiService) {
+    super();
+    this.#filmsApiService = filmsApiService;
+    this.#filmsApiService.films.then(console.log);
+  }
 
   get films() {
     return this.#films;
