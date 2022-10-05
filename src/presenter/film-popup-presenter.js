@@ -57,6 +57,31 @@ export default class FilmPopupPresenter {
     remove(prevPopupComponent);
   };
 
+  setSaving = () => {
+    this.#filmPopup.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
+  setDeleting = () => {
+    this.#filmPopup.updateElement({
+      isDisabled: true,
+      isDeleting: true,
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#filmPopup.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#filmPopup.shake(resetFormState);
+  };
+
   #checkClearComments = (popupComponent, currentFilm) => {
     const PopupComponentId = {
       prev: popupComponent?.currentFilm?.id,

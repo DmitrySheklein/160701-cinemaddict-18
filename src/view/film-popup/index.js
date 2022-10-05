@@ -28,11 +28,17 @@ export default class FilmsPopup extends AbstractStatefulView {
     comments,
     newComment,
     scrollPosition,
+    isDisabled: false,
+    isSending: false,
+    isDeleting: false,
   });
 
   static parseStateToData = (state) => {
     const newState = { ...state };
 
+    delete newState.isDisabled;
+    delete newState.isSending;
+    delete newState.isDeleting;
     delete newState.film;
     delete newState.scrollPosition;
     return newState;
@@ -66,10 +72,6 @@ export default class FilmsPopup extends AbstractStatefulView {
 
     if (isSubmit || isCtrlEnter) {
       evt.preventDefault();
-      this.updateViewData({
-        newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
-        scrollPosition: this._state.scrollPosition,
-      });
       this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }
   };
