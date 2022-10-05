@@ -7,9 +7,9 @@ const createNavigationTemplate = (navigationArray, current = NavigationType.ALL.
   return `
   <nav class="main-navigation">
     ${navigationArray
-      .map(
-        ({ type, name, count }) =>
-          `<a
+    .map(
+      ({ type, name, count }) =>
+        `<a
              href="#${type}"
              class="main-navigation__item
              ${isActiveClass(type)}"
@@ -23,8 +23,8 @@ const createNavigationTemplate = (navigationArray, current = NavigationType.ALL.
               ${count}
             </span>
           </a>`,
-      )
-      .join('')}
+    )
+    .join('')}
   </nav>
   `;
 };
