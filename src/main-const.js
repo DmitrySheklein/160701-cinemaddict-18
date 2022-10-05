@@ -1,6 +1,5 @@
 const END_POINT = 'https://18.ecmascript.pages.academy/cinemaddict';
 const AUTHORIZATION = 'Basic 132dds2Z';
-const MAX_COMMENTS_COUNT = 5;
 const NavigationType = {
   ALL: {
     id: 'all',
@@ -19,6 +18,15 @@ const NavigationType = {
     name: 'Favorites',
   },
 };
+const NavigationFilter = {
+  [NavigationType.ALL.id]: (films) => films,
+  [NavigationType.WATCHLIST.id]: (films) =>
+    films.filter(({ userDetails }) => userDetails.watchlist),
+  [NavigationType.HISTORY.id]: (films) =>
+    films.filter(({ userDetails }) => userDetails.alreadyWatched),
+  [NavigationType.FAVORITES.id]: (films) => films.filter(({ userDetails }) => userDetails.favorite),
+};
+
 const StatusTitleMap = {
   [NavigationType.ALL.id]: 'There are no movies in our database',
   [NavigationType.WATCHLIST.id]: 'There are no movies to watch now',
@@ -55,7 +63,7 @@ export {
   UpdateType,
   UserAction,
   StatusTitleMap,
-  MAX_COMMENTS_COUNT,
+  NavigationFilter,
   NavigationType,
   SortType,
   DEFAULT_VIEW_POPUP_DATA,
