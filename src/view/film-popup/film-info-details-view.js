@@ -4,7 +4,7 @@ const createInfoTemplate = (filmInfo) => {
   const {
     title,
     alternativeTitle,
-    imgSrc,
+    poster,
     ageRating,
     director,
     totalRating,
@@ -19,7 +19,7 @@ const createInfoTemplate = (filmInfo) => {
   return `
     <div class="film-details__info-wrap">
     <div class="film-details__poster">
-      <img class="film-details__poster-img" src="${imgSrc}" alt="">
+      <img class="film-details__poster-img" src="${poster}" alt="">
 
       <p class="film-details__age">${ageRating}+</p>
     </div>
