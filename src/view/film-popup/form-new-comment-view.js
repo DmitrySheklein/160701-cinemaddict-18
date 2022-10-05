@@ -1,6 +1,6 @@
 import createEmojiList from './emoji-list-view';
 
-const createCommentForm = (newComment) => {
+const createCommentForm = (newComment, { isDisabled, isSending }) => {
   const { emotion, comment = '' } = newComment;
   const emotionImg = emotion
     ? `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">`
@@ -13,13 +13,25 @@ const createCommentForm = (newComment) => {
         </div>
 
         <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment" required>${comment}</textarea>
+            <textarea
+               class="film-details__comment-input"
+               placeholder="Select reaction below and write comment here"
+               name="comment"
+               required
+               ${isDisabled ? 'disabled' : ''}
+              >${comment}</textarea>
         </label>
 
         <div class="film-details__emoji-list">
         ${createEmojiList(emotion)}
         </div>
-        <button type="submit" class="film-details__submit-btn">Send</button>
+        <button
+          type="submit"
+          class="film-details__submit-btn"
+          ${isDisabled ? 'disabled' : ''}
+        >
+          ${isSending ? 'Sending...' : 'Send'}
+        </button>
     </form>`;
 };
 

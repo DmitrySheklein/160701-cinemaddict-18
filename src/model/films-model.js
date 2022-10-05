@@ -1,5 +1,5 @@
 import Observable from '../framework/observable';
-import { TransformKeysObject } from '../util';
+import { TransformKeysObject } from '../utils/transform-keys';
 import { UpdateType } from '../main-const';
 export default class FilmsModel extends Observable {
   #films = [];

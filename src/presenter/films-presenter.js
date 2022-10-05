@@ -8,12 +8,17 @@ import SortView from '../view/sort-view';
 import { StatusTitleMap } from '../main-const';
 import FilmCardPresenter from './film-card-presenter';
 import { SortType, UserAction, UpdateType, NavigationType } from '../main-const';
-import { sortFilmsDate, sortFilmsRating } from '../util';
+import { sortFilmsDate, sortFilmsRating } from '../utils/sort';
 import FilmPopupPresenter from './film-popup-presenter';
-import { NavigationFilter } from '../util';
+import { NavigationFilter } from '../main-const';
 import LoadingView from '../view/loading-view';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 const FILM_COUNT_PER_STEP = 5;
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 export default class FilmsPresenter {
   #filmsContainer = new FilmsContainer();
   #filmsListSection = new FilmsListSection();
@@ -36,6 +41,7 @@ export default class FilmsPresenter {
   #filmPopupPresenter = null;
   #navigationPresenter = null;
   #isLoading = true;
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(mainContainer, filmsModel, commentsModel, navigationModel, navigationPresenter) {
     this.#mainContainer = mainContainer;
@@ -181,21 +187,34 @@ export default class FilmsPresenter {
     }
   };
 
-  #handleViewAction = (actionType, updateType, data) => {
-    const { updatedFilm, newCommentPart, commentDelId, filmId } = data;
+  #handleViewAction = async (actionType, updateType, data) => {
+    this.#uiBlocker.block();
+    const { updatedFilm, newCommentPart, commentId, filmId } = data;
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, updatedFilm);
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(updateType, commentDelId);
-        this.#filmsModel.updateFilm(updateType, updatedFilm);
+        this.#filmPopupPresenter.setDeleting();
+        try {
+          await this.#commentsModel.deleteComment(updateType, { commentId, filmId });
+        } catch (error) {
+          this.#filmPopupPresenter.setAborting();
+        }
+
         break;
       case UserAction.ADD_COMMENT:
-        this.#commentsModel.addComment(updateType, { newCommentPart, filmId });
+        this.#filmPopupPresenter.setSaving();
+        try {
+          await this.#commentsModel.addComment(updateType, { newCommentPart, filmId });
+        } catch (error) {
+          this.#filmPopupPresenter.setAborting();
+        }
+
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {

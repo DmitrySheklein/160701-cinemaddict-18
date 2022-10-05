@@ -6,8 +6,8 @@ import NavigationPresenter from './presenter/navigation-presenter';
 import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
 import NavigationModel from './model/navigation-model';
-import FilmsApiService from './films-api-service';
-import CommentsApiService from './comments-api-service';
+import FilmsApiService from './api/films-api-service';
+import CommentsApiService from './api/comments-api-service';
 import { AUTHORIZATION, END_POINT } from './main-const';
 
 const siteMainElement = document.querySelector('.main');

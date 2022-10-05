@@ -1,4 +1,4 @@
-import { emotions } from '../../mock/const';
+const emotions = ['smile', 'sleeping', 'puke', 'angry'];
 
 const createEmojiList = (checkedEmotion) =>
   emotions

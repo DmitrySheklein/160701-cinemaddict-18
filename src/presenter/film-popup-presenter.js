@@ -1,6 +1,6 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
-import { isEsc } from '../util';
+import { isEsc } from '../utils';
 import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 import { UserAction, UpdateType } from '../main-const';
 
@@ -57,6 +57,31 @@ export default class FilmPopupPresenter {
     remove(prevPopupComponent);
   };
 
+  setSaving = () => {
+    this.#filmPopup.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
+  setDeleting = () => {
+    this.#filmPopup.updateElement({
+      isDisabled: true,
+      isDeleting: true,
+    });
+  };
+
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#filmPopup.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#filmPopup.shake(resetFormState);
+  };
+
   #checkClearComments = (popupComponent, currentFilm) => {
     const PopupComponentId = {
       prev: popupComponent?.currentFilm?.id,
@@ -79,15 +104,10 @@ export default class FilmPopupPresenter {
     });
   };
 
-  #onCommentBtnRemoveClick = (commentsId) => {
-    const updatedFilm = {
-      ...this.#film,
-      comments: this.#film.comments.filter((id) => id !== commentsId),
-    };
-
+  #onCommentBtnRemoveClick = (commentId) => {
     this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, {
-      commentsDelId: commentsId,
-      updatedFilm,
+      commentId,
+      filmId: this.#film.id,
     });
   };
 

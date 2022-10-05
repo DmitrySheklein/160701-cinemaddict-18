@@ -1,8 +1,5 @@
-import { TransformKeysObject } from '../util';
+import { TransformKeysObject } from '../utils/transform-keys';
 import Observable from '../framework/observable';
-import { nanoid } from 'nanoid';
-import { Random, generatePerson } from '../util';
-import { names, surnames } from '../mock/const';
 import { UpdateType } from '../main-const';
 
 export default class CommentsModel extends Observable {
@@ -45,28 +42,56 @@ export default class CommentsModel extends Observable {
     }
   };
 
-  addComment = (updateType, { newCommentPart, filmId }) => {
-    const newCommentId = nanoid();
-    const newComment = {
-      ...newCommentPart,
-      id: newCommentId,
-      author: generatePerson(names, surnames),
-      date: Random.date(),
-    };
-    this.#allComments.push(newComment);
+  addComment = async (updateType, { newCommentPart, filmId }) => {
+    try {
+      const response = await this.#commentsApiService.addComment({
+        filmId,
+        comment: newCommentPart,
+      });
+      const { movie, comments } = response;
 
-    const film = this.#filmsModel.films.find((el) => el.id === filmId);
-    if (film) {
-      const newFilm = { ...film, comments: [...film.comments, newCommentId] };
-      this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm);
+      this.#allComments = this.#allComments.map((el) => {
+        if (el.id === filmId) {
+          return {
+            ...el,
+            comments: comments.map(this.#adaptToClient),
+          };
+        }
+        return el;
+      });
+      this.#filmsModel.updateFilm(UpdateType.PATCH, this.#adaptToClient(movie));
+      this._notify(updateType, comments);
+    } catch (error) {
+      throw new Error("Can't add comment");
     }
-
-    this._notify(updateType, newComment);
   };
 
-  deleteComment = (updateType, commentId) => {
-    this.#allComments = this.#allComments.filter((comment) => comment.id !== commentId);
-    this._notify(updateType, commentId);
+  deleteComment = async (updateType, { commentId, filmId }) => {
+    try {
+      await this.#commentsApiService.deleteComment(commentId);
+
+      this.#allComments = this.#allComments.map((el) => {
+        if (el.id === filmId) {
+          return {
+            ...el,
+            comments: el.comments.filter((comment) => comment.id !== commentId),
+          };
+        }
+        return el;
+      });
+      const film = this.#filmsModel.films.find((el) => el.id === filmId);
+      if (film) {
+        const newFilm = {
+          ...film,
+          comments: film.comments.filter((id) => id !== commentId),
+        };
+        this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm);
+      }
+
+      this._notify(updateType);
+    } catch (error) {
+      throw new Error("Can't delete comment");
+    }
   };
 
   #adaptToClient = (comment) => {

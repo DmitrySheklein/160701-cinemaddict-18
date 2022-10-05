@@ -1,6 +1,7 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createFilmsPopupTemplate from './film-popup-view';
 import { DEFAULT_VIEW_POPUP_DATA } from '../../main-const';
+import { isSubmit, isCtrlEnter } from '../../utils';
 
 export default class FilmsPopup extends AbstractStatefulView {
   constructor(film, comments, newComment, scrollPosition, updateViewData) {
@@ -28,11 +29,17 @@ export default class FilmsPopup extends AbstractStatefulView {
     comments,
     newComment,
     scrollPosition,
+    isDisabled: false,
+    isSending: false,
+    isDeleting: false,
   });
 
   static parseStateToData = (state) => {
     const newState = { ...state };
 
+    delete newState.isDisabled;
+    delete newState.isSending;
+    delete newState.isDeleting;
     delete newState.film;
     delete newState.scrollPosition;
     return newState;
@@ -61,15 +68,8 @@ export default class FilmsPopup extends AbstractStatefulView {
   };
 
   #commentsFormSubmitHandler = (evt) => {
-    const isSubmit = evt.type === 'submit';
-    const isCtrlEnter = (evt.ctrlKey || evt.metaKey) && evt.key === 'Enter';
-
-    if (isSubmit || isCtrlEnter) {
+    if (isSubmit(evt) || isCtrlEnter(evt)) {
       evt.preventDefault();
-      this.updateViewData({
-        newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
-        scrollPosition: this._state.scrollPosition,
-      });
       this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }
   };
@@ -100,10 +100,6 @@ export default class FilmsPopup extends AbstractStatefulView {
     const removedId = evt.target.closest('[data-id]')?.dataset.id;
 
     if (removedId) {
-      this.updateElement({
-        comments: this._state.comments.filter((el) => el.id !== removedId),
-      });
-      // this._callback.removeBtnClick(FilmsPopup.parseStateToData(this._state).comments);
       this._callback.removeBtnClick(removedId);
     }
   };
