@@ -1,6 +1,6 @@
 import Observable from '../framework/observable';
 import { TransformKeysObject } from '../util';
-
+import { UpdateType } from '../main-const';
 export default class FilmsModel extends Observable {
   #films = [];
   #filmsApiService = null;
@@ -17,6 +17,8 @@ export default class FilmsModel extends Observable {
     } catch (error) {
       this.#films = [];
     }
+
+    this._notify(UpdateType.INIT);
   };
 
   get films() {
