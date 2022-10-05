@@ -8,6 +8,9 @@ const createFilmsPopupTemplate = (state) => {
     film: { filmInfo, userDetails },
     comments,
     newComment,
+    isDisabled,
+    isDeleting,
+    isSending,
   } = state;
 
   return `
@@ -30,10 +33,10 @@ const createFilmsPopupTemplate = (state) => {
             </h3>
 
             <ul class="film-details__comments-list">
-              ${comments.map(createComment).join('')}
+              ${comments.map(createComment, { isDeleting, isDisabled }).join('')}
             </ul>
 
-              ${createCommentForm(newComment)}
+              ${createCommentForm(newComment, { isDisabled, isSending })}
           </section>
         </div>
       </div>
