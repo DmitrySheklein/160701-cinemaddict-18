@@ -74,6 +74,10 @@ class HumanizeDate {
     return dayjs({ minute }).format('H[h] mm[m]');
   }
 
+  static FilmReleaseYear(date) {
+    return dayjs(date).format('YYYY');
+  }
+
   static FilmRelease(date) {
     return dayjs(date).format('M MMM YYYY');
   }
