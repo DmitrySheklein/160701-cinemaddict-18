@@ -1,16 +1,23 @@
-import { generateFilms } from '../mock/film';
 import Observable from '../framework/observable';
 import { TransformKeysObject } from '../util';
 
 export default class FilmsModel extends Observable {
-  #films = generateFilms();
+  #films = [];
   #filmsApiService = null;
 
   constructor(filmsApiService) {
     super();
     this.#filmsApiService = filmsApiService;
-    this.#filmsApiService.films.then((films) => films.map(this.#adaptToClient));
   }
+
+  init = async () => {
+    try {
+      const films = await this.#filmsApiService.films;
+      this.#films = films.map(this.#adaptToClient);
+    } catch (error) {
+      this.#films = [];
+    }
+  };
 
   get films() {
     return this.#films;

@@ -28,4 +28,5 @@ const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistic
 render(new ProfileView(), siteHeaderElement);
 navigationPresenter.init();
 filmsPresenter.init();
+filmsModel.init();
 render(new FooterStatisticsView(), siteFooterStatistics);
