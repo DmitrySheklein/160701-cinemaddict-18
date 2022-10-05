@@ -1,6 +1,3 @@
-import { render } from './framework/render';
-import ProfileView from './view/profile-view';
-import FooterStatisticsView from './view/footer-statistics-view';
 import FilmsPresenter from './presenter/films-presenter';
 import NavigationPresenter from './presenter/navigation-presenter';
 import FilmsModel from './model/films-model';
@@ -9,6 +6,8 @@ import NavigationModel from './model/navigation-model';
 import FilmsApiService from './api/films-api-service';
 import CommentsApiService from './api/comments-api-service';
 import { AUTHORIZATION, END_POINT } from './main-const';
+import HeaderProfilePresenter from './presenter/header-profile-presenter';
+import FooterStatisticsPresenter from './presenter/footer-statistics-presenter';
 
 const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = document.querySelector('.header');
@@ -28,10 +27,12 @@ const filmsPresenter = new FilmsPresenter(
   navigationModel,
   navigationPresenter,
 );
-const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
+const headerProfilePresenter = new HeaderProfilePresenter(siteHeaderElement, filmsModel);
+const footerStatisticsPresenter = new FooterStatisticsPresenter(siteFooterElement, filmsModel);
 
-render(new ProfileView(), siteHeaderElement);
 navigationPresenter.init();
 filmsPresenter.init();
-filmsModel.init();
-render(new FooterStatisticsView(), siteFooterStatistics);
+filmsModel.init().then(() => {
+  footerStatisticsPresenter.init();
+  headerProfilePresenter.init();
+});
