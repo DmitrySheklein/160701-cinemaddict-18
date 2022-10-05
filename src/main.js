@@ -16,13 +16,14 @@ const siteFooterElement = document.querySelector('.footer');
 const filmsModel = new FilmsModel(new FilmsApiService(END_POINT, AUTHORIZATION));
 const navigationModel = new NavigationModel();
 const commentsModel = new CommentsModel(filmsModel);
+const navigationPresenter = new NavigationPresenter(siteMainElement, navigationModel, filmsModel);
 const filmsPresenter = new FilmsPresenter(
   siteMainElement,
   filmsModel,
   commentsModel,
   navigationModel,
+  navigationPresenter,
 );
-const navigationPresenter = new NavigationPresenter(siteMainElement, navigationModel, filmsModel);
 const siteFooterStatistics = siteFooterElement.querySelector('.footer__statistics');
 
 render(new ProfileView(), siteHeaderElement);
