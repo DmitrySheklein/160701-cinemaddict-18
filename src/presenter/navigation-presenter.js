@@ -46,6 +46,10 @@ export default class NavigationPresenter {
     ];
   }
 
+  get component() {
+    return this.#navigationComponent;
+  }
+
   init = () => {
     const navigations = this.navigations;
     const prevNavComponent = this.#navigationComponent;

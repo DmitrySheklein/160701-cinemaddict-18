@@ -1,9 +1,12 @@
 import { HumanizeDate } from '../../util';
 import he from 'he';
 
-const createComment = (commentItem) => {
+const createComment = (commentItem = {}) => {
   const { id, comment, emotion, author = '', date } = commentItem;
 
+  if (!id || !emotion || !comment) {
+    return '';
+  }
   return `
     <li class="film-details__comment" data-id="${id}">
     <span class="film-details__comment-emoji">

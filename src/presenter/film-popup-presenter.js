@@ -3,7 +3,6 @@ import FilmsPopup from '../view/film-popup';
 import { isEsc } from '../util';
 import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 import { UserAction, UpdateType } from '../main-const';
-import { nanoid } from 'nanoid';
 
 export default class FilmPopupPresenter {
   #siteBodyElement = document.body;
@@ -24,11 +23,11 @@ export default class FilmPopupPresenter {
     return this.#film;
   }
 
-  init = (film) => {
+  init = async (film) => {
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
     this.#checkClearComments(prevPopupComponent, this.#film);
-    const comments = this.#commentsModel.get(this.#film);
+    const comments = await this.#commentsModel.get(this.#film);
     this.#filmPopup = new FilmsPopup(
       this.#film,
       comments,

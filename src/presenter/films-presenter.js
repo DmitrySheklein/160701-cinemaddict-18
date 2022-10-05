@@ -1,4 +1,5 @@
-import { render, remove } from '../framework/render';
+import { render, remove, RenderPosition } from '../framework/render';
+import FilmsContainer from '../view/films-container-view';
 import FilmsListSection from '../view/films-list/films-list-section-view';
 import FilmsListContainer from '../view/films-list/films-list-container-view';
 import FilmsListTitle from '../view/films-list/films-list-title-view';
@@ -10,11 +11,14 @@ import { SortType, UserAction, UpdateType, NavigationType } from '../main-const'
 import { sortFilmsDate, sortFilmsRating } from '../util';
 import FilmPopupPresenter from './film-popup-presenter';
 import { NavigationFilter } from '../util';
+import LoadingView from '../view/loading-view';
 
 const FILM_COUNT_PER_STEP = 5;
 export default class FilmsPresenter {
+  #filmsContainer = new FilmsContainer();
   #filmsListSection = new FilmsListSection();
   #filmsListContainer = new FilmsListContainer();
+  #loadingComponent = new LoadingView();
   #filmsShowMoreBtn = null;
   #sortView = null;
   #filmListTitle = null;
@@ -30,13 +34,16 @@ export default class FilmsPresenter {
   #currentFilmSort = SortType.DEFAULT;
   #navigationType = NavigationType.ALL.id;
   #filmPopupPresenter = null;
+  #navigationPresenter = null;
+  #isLoading = true;
 
-  constructor(mainContainer, filmsModel, commentsModel, navigationModel) {
+  constructor(mainContainer, filmsModel, commentsModel, navigationModel, navigationPresenter) {
     this.#mainContainer = mainContainer;
     this.#filmsModel = filmsModel;
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#commentsModel = commentsModel;
     this.#navigationModel = navigationModel;
+    this.#navigationPresenter = navigationPresenter;
     this.#navigationModel.addObserver(this.#handleModelEvent);
     this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleViewAction);
   }
@@ -60,22 +67,29 @@ export default class FilmsPresenter {
   };
 
   #renderFilmsBoard = () => {
+    render(this.#filmsContainer, this.#mainContainer);
+    render(this.#filmsListSection, this.#filmsContainer.element);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const films = this.films;
     const filmsCount = films.length;
 
     if (filmsCount) {
       this.#renderSort();
     }
-    render(this.#filmsListSection, this.#mainContainer);
+
     if (!filmsCount) {
       this.#renderFilmsListTitle({ titleText: StatusTitleMap[this.#navigationType] });
 
       return;
     }
-
     this.#renderFilmsListTitle({ titleText: 'All movies. Upcoming', hidden: true });
-
     render(this.#filmsListContainer, this.#filmsListSection.element);
+
     this.#renderFilms(films.slice(0, Math.min(filmsCount, this.#renderedFilmCount)));
 
     if (this.#renderedFilmCount < filmsCount) {
@@ -104,7 +118,7 @@ export default class FilmsPresenter {
     this.#sortView = new SortView(this.#currentFilmSort);
     this.#sortView.setSortTypeHandler(this.#onSortChange);
 
-    render(this.#sortView, this.#mainContainer);
+    render(this.#sortView, this.#navigationPresenter.component.element, RenderPosition.AFTEREND);
   };
 
   #renderShowMoreBtn = () => {
@@ -139,6 +153,10 @@ export default class FilmsPresenter {
     this.#filmPresenter.set(film.id, filmCardPresenter);
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#filmsListSection.element);
+  };
+
   #clearFilmsBoard = ({ resetRenderedFilmCount = false, resetSortType = false } = {}) => {
     const filmsCount = this.films.length;
 
@@ -150,6 +168,7 @@ export default class FilmsPresenter {
     remove(this.#filmListTitle);
     remove(this.#filmsListSection);
     remove(this.#filmsListContainer);
+    remove(this.#loadingComponent);
 
     if (resetRenderedFilmCount) {
       this.#renderedFilmCount = FILM_COUNT_PER_STEP;
@@ -196,6 +215,11 @@ export default class FilmsPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearFilmsBoard({ resetRenderedFilmCount: true, resetSortType: true });
+        this.#renderFilmsBoard();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderFilmsBoard();
         break;
     }

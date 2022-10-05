@@ -1,4 +1,4 @@
-import { generateComments } from '../mock/comments';
+import { TransformKeysObject } from '../util';
 import Observable from '../framework/observable';
 import { nanoid } from 'nanoid';
 import { Random, generatePerson } from '../util';
@@ -8,27 +8,42 @@ import { UpdateType } from '../main-const';
 export default class CommentsModel extends Observable {
   #filmsModel = null;
   #allComments = [];
-  #comments = [];
+  #commentsApiService = null;
 
-  constructor(filmsModel) {
+  constructor(filmsModel, commentsApiService) {
     super();
     this.#filmsModel = filmsModel;
-    this.generateComments();
+    this.#commentsApiService = commentsApiService;
   }
 
-  generateComments() {
-    this.#allComments = generateComments(this.#filmsModel.films);
-  }
+  get = async (film) => {
+    const filmId = film.id;
+    const filmComments = this.#allComments.find((el) => el.id === filmId);
 
-  get = (film) => {
-    this.#comments = film.comments.map((commentId) =>
-      this.#allComments.find((comment) => comment.id === commentId),
-    );
+    if (filmComments) {
+      return filmComments.comments;
+    } else {
+      const loadedComments = await this.#loadComments(filmId);
 
-    return this.#comments;
+      this.#allComments.push({
+        id: filmId,
+        comments: loadedComments,
+      });
+
+      return loadedComments;
+    }
   };
 
-  getComments = () => this.#comments;
+  #loadComments = async (filmId) => {
+    try {
+      const comments = await this.#commentsApiService.getFilmComments(filmId);
+      const adaptedComments = comments.map(this.#adaptToClient);
+
+      return adaptedComments;
+    } catch (error) {
+      throw new Error("Can't load film comments");
+    }
+  };
 
   addComment = (updateType, { newCommentPart, filmId }) => {
     const newCommentId = nanoid();
@@ -52,5 +67,11 @@ export default class CommentsModel extends Observable {
   deleteComment = (updateType, commentId) => {
     this.#allComments = this.#allComments.filter((comment) => comment.id !== commentId);
     this._notify(updateType, commentId);
+  };
+
+  #adaptToClient = (comment) => {
+    const adaptedComment = new TransformKeysObject(comment).toCamelCase();
+
+    return adaptedComment;
   };
 }
