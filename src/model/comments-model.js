@@ -1,4 +1,4 @@
-import { TransformKeysObject } from '../util';
+import { TransformKeysObject } from '../utils/transform-keys';
 import Observable from '../framework/observable';
 import { UpdateType } from '../main-const';
 

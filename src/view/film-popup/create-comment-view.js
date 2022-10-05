@@ -1,4 +1,4 @@
-import { HumanizeDate } from '../../util';
+import { HumanizeDate } from '../../utils/date';
 import he from 'he';
 
 const createComment = (commentItem = {}, { isDeleting, isDisabled }) => {

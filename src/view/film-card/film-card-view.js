@@ -1,5 +1,5 @@
 import createFilmCardControls from './film-card-controls-view';
-import { HumanizeDate } from '../../util';
+import { HumanizeDate } from '../../utils/date';
 
 const createFilmsCardTemplate = ({ filmInfo, comments, userDetails }) => {
   const {

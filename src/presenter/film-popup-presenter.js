@@ -1,6 +1,6 @@
 import { render, remove, replace } from '../framework/render';
 import FilmsPopup from '../view/film-popup';
-import { isEsc } from '../util';
+import { isEsc } from '../utils';
 import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 import { UserAction, UpdateType } from '../main-const';
 

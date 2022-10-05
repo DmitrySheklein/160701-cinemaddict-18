@@ -1,4 +1,4 @@
-import { TransformKeysObject } from '../util';
+import { TransformKeysObject } from '../utils/transform-keys';
 
 /**
  * Класс для отправки запросов к серверу

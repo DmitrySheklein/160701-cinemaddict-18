@@ -1,4 +1,4 @@
-import { HumanizeDate } from '../../util';
+import { HumanizeDate } from '../../utils/date';
 
 const createInfoTemplate = (filmInfo) => {
   const {

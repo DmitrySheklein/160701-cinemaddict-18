@@ -1,6 +1,7 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createFilmsPopupTemplate from './film-popup-view';
 import { DEFAULT_VIEW_POPUP_DATA } from '../../main-const';
+import { isSubmit, isCtrlEnter } from '../../utils';
 
 export default class FilmsPopup extends AbstractStatefulView {
   constructor(film, comments, newComment, scrollPosition, updateViewData) {
@@ -67,10 +68,7 @@ export default class FilmsPopup extends AbstractStatefulView {
   };
 
   #commentsFormSubmitHandler = (evt) => {
-    const isSubmit = evt.type === 'submit';
-    const isCtrlEnter = (evt.ctrlKey || evt.metaKey) && evt.key === 'Enter';
-
-    if (isSubmit || isCtrlEnter) {
+    if (isSubmit(evt) || isCtrlEnter(evt)) {
       evt.preventDefault();
       this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }

@@ -8,9 +8,9 @@ import SortView from '../view/sort-view';
 import { StatusTitleMap } from '../main-const';
 import FilmCardPresenter from './film-card-presenter';
 import { SortType, UserAction, UpdateType, NavigationType } from '../main-const';
-import { sortFilmsDate, sortFilmsRating } from '../util';
+import { sortFilmsDate, sortFilmsRating } from '../utils/sort';
 import FilmPopupPresenter from './film-popup-presenter';
-import { NavigationFilter } from '../util';
+import { NavigationFilter } from '../main-const';
 import LoadingView from '../view/loading-view';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
