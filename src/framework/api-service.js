@@ -1,7 +1,20 @@
+import { TransformKeysObject } from '../util';
+
 /**
  * Класс для отправки запросов к серверу
  */
 export default class ApiService {
+  #Method = {
+    GET: 'GET',
+    PUT: 'PUT',
+    POST: 'POST',
+    DELETE: 'DELETE',
+  };
+
+  get Method() {
+    return this.#Method;
+  }
+
   /**
    * @param {string} endPoint Адрес сервера
    * @param {string} authorization Авторизационный токен
@@ -20,18 +33,10 @@ export default class ApiService {
    * @param {Headers} [config.headers] Заголовки запроса
    * @returns {Promise<Response>}
    */
-  _load = async ({
-    url,
-    method = 'GET',
-    body = null,
-    headers = new Headers(),
-  }) => {
+  _load = async ({ url, method = 'GET', body = null, headers = new Headers() }) => {
     headers.append('Authorization', this._authorization);
 
-    const response = await fetch(
-      `${this._endPoint}/${url}`,
-      {method, body, headers},
-    );
+    const response = await fetch(`${this._endPoint}/${url}`, { method, body, headers });
 
     try {
       ApiService.checkStatus(response);
@@ -65,4 +70,10 @@ export default class ApiService {
   static catchError = (err) => {
     throw err;
   };
+
+  /**
+   * Метод для преобразования данных под сервер
+   * @param {Object} Object Объект данных для сервера
+   */
+  static adaptToServer = (obj) => new TransformKeysObject(obj).fromCamelToSnakeCase();
 }
