@@ -1,4 +1,5 @@
 import ApiService from './framework/api-service';
+import { TransformKeysObject } from './util';
 
 const Method = {
   GET: 'GET',
@@ -23,7 +24,7 @@ export default class FilmsApiService extends ApiService {
   };
 
   #adaptToServer = (film) => {
-    const adaptedFilm = { ...film };
+    const adaptedFilm = new TransformKeysObject(film).fromCamelToSnakeCase();
 
     return adaptedFilm;
   };
