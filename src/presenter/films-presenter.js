@@ -182,15 +182,14 @@ export default class FilmsPresenter {
   };
 
   #handleViewAction = (actionType, updateType, data) => {
-    const { updatedFilm, newCommentPart, commentDelId, filmId } = data;
+    const { updatedFilm, newCommentPart, commentId, filmId } = data;
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this.#filmsModel.updateFilm(updateType, updatedFilm);
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.deleteComment(updateType, commentDelId);
-        this.#filmsModel.updateFilm(updateType, updatedFilm);
+        this.#commentsModel.deleteComment(updateType, { commentId, filmId });
         break;
       case UserAction.ADD_COMMENT:
         this.#commentsModel.addComment(updateType, { newCommentPart, filmId });

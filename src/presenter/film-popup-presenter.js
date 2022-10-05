@@ -79,15 +79,10 @@ export default class FilmPopupPresenter {
     });
   };
 
-  #onCommentBtnRemoveClick = (commentsId) => {
-    const updatedFilm = {
-      ...this.#film,
-      comments: this.#film.comments.filter((id) => id !== commentsId),
-    };
-
+  #onCommentBtnRemoveClick = (commentId) => {
     this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, {
-      commentsDelId: commentsId,
-      updatedFilm,
+      commentId,
+      filmId: this.#film.id,
     });
   };
 
