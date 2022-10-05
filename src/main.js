@@ -7,6 +7,7 @@ import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';
 import NavigationModel from './model/navigation-model';
 import FilmsApiService from './films-api-service';
+import CommentsApiService from './comments-api-service';
 import { AUTHORIZATION, END_POINT } from './main-const';
 
 const siteMainElement = document.querySelector('.main');
@@ -15,7 +16,10 @@ const siteFooterElement = document.querySelector('.footer');
 
 const filmsModel = new FilmsModel(new FilmsApiService(END_POINT, AUTHORIZATION));
 const navigationModel = new NavigationModel();
-const commentsModel = new CommentsModel(filmsModel);
+const commentsModel = new CommentsModel(
+  filmsModel,
+  new CommentsApiService(END_POINT, AUTHORIZATION),
+);
 const navigationPresenter = new NavigationPresenter(siteMainElement, navigationModel, filmsModel);
 const filmsPresenter = new FilmsPresenter(
   siteMainElement,
