@@ -20,7 +20,7 @@ export default class FilmCardPresenter {
     const prevFilmComponent = this.#filmComponent;
     this.#filmComponent = new FilmsCard(this.#film);
     this.#filmComponent.setClickHandler(this.#onFilmCardClick);
-    this.#filmComponent.setFavotiteClickHandler(this.#onFavoriteBtnClick);
+    this.#filmComponent.setFavoriteClickHandler(this.#onFavoriteBtnClick);
     this.#filmComponent.setWatchListClickHandler(this.#onWatchListBtnClick);
     this.#filmComponent.setWatchedClickHandler(this.#onWatchedBtnClick);
 
