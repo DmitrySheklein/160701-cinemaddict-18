@@ -46,6 +46,11 @@ export default class FilmsPopup extends AbstractStatefulView {
   };
 
   #updateViewData = () => {
+    const scrollValue = this.element.scrollTop;
+
+    this._setState({
+      scrollPosition: scrollValue,
+    });
     this.updateViewData({
       newComment: this._state.newComment,
       scrollPosition: this._state.scrollPosition,
@@ -75,18 +80,12 @@ export default class FilmsPopup extends AbstractStatefulView {
   };
 
   #setInnerHandlers = () => {
-    this.element.addEventListener('scroll', this.#onScroll);
     this.element
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this.#commentsInputHandler);
     this.element
       .querySelectorAll('.film-details__emoji-item[type="radio"]')
       .forEach((input) => input.addEventListener('change', this.#emotionsInputHandler));
-  };
-
-  #onScroll = (evt) => {
-    const scrollValue = evt.target.scrollTop;
-    this._setState({ scrollPosition: scrollValue });
   };
 
   setCommentRemoveHandler = (callback) => {

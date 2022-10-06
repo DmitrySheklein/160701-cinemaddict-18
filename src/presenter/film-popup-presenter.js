@@ -52,6 +52,7 @@ export default class FilmPopupPresenter {
 
     if (this.#siteBodyElement.contains(prevPopupComponent.element)) {
       replace(this.#filmPopup, prevPopupComponent);
+      this.#filmPopup.setScrollPosition();
     }
 
     remove(prevPopupComponent);
@@ -127,8 +128,6 @@ export default class FilmPopupPresenter {
       },
     };
     this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
-    this.init(updatedFilm);
-    this.#filmPopup.setScrollPosition();
   };
 
   #onWatchListBtnClick = () => {
@@ -140,8 +139,6 @@ export default class FilmPopupPresenter {
       },
     };
     this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
-    this.init(updatedFilm);
-    this.#filmPopup.setScrollPosition();
   };
 
   #onWatchedBtnClick = () => {
@@ -153,8 +150,6 @@ export default class FilmPopupPresenter {
       },
     };
     this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
-    this.init(updatedFilm);
-    this.#filmPopup.setScrollPosition();
   };
 
   #removePopup = () => {
