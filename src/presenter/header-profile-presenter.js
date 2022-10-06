@@ -1,7 +1,7 @@
-import { render } from '../framework/render';
+import { remove, render, replace } from '../framework/render';
 import { getUserStatus } from '../utils/';
 import ProfileView from '../view/profile-view';
-
+import { UpdateType } from '../main-const';
 export default class HeaderProfilePresenter {
   #container = null;
   #headerProfileComponent = null;
@@ -18,12 +18,26 @@ export default class HeaderProfilePresenter {
 
   init = () => {
     this.#userStatus = getUserStatus(this.#filmsModel.films);
-    this.#renderProfile();
+    const prevHeaderProfileComponent = this.#headerProfileComponent;
+    this.#headerProfileComponent = new ProfileView(this.#userStatus);
+
+    if (prevHeaderProfileComponent === null) {
+      render(this.#headerProfileComponent, this.#container);
+
+      return;
+    }
+
+    if (this.#container.contains(prevHeaderProfileComponent.element)) {
+      replace(this.#headerProfileComponent, prevHeaderProfileComponent);
+    }
+
+    remove(prevHeaderProfileComponent);
   };
 
-  #renderProfile = () => {
-    render(new ProfileView(this.#userStatus), this.#container);
+  #modelEventHandler = (updateType) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.init();
+    }
   };
-
-  #modelEventHandler = () => {};
 }

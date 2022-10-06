@@ -9,13 +9,13 @@ const getUserStatus = (films) => {
   );
   const UserTitle = {
     0: '',
-    10: 'novice',
-    20: 'fan',
+    1: 'novice',
+    11: 'fan',
     21: 'movie buff',
   };
   const statusText = Object.entries(UserTitle).reduce((acc, [key, value]) => {
-    if (watchedFilmsCount > Number(key)) {
-      return (acc += value);
+    if (watchedFilmsCount >= Number(key)) {
+      return value;
     }
     return acc;
   }, '');
