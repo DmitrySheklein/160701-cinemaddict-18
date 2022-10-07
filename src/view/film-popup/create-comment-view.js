@@ -1,9 +1,9 @@
 import { HumanizeDate } from '../../utils/date';
 import he from 'he';
 
-const createComment = (commentItem = {}, { isDeleting, isDisabled }) => {
+const createComment = (commentItem = {}, { isDeleting, isDisabled, deletedCommentId }) => {
   const { id, comment, emotion, author = '', date } = commentItem;
-
+  const isDeletedId = deletedCommentId === id;
   if (!id || !emotion || !comment) {
     return '';
   }
@@ -19,9 +19,9 @@ const createComment = (commentItem = {}, { isDeleting, isDisabled }) => {
         <span class="film-details__comment-day">${HumanizeDate.FromNow(date)}</span>
         <button
           class="film-details__comment-delete"
-          ${isDisabled ? 'disabled' : ''}
+          ${isDisabled && isDeletedId ? 'disabled' : ''}
         >
-          ${isDeleting ? 'Deleting...' : 'Delete'}
+          ${isDeleting && isDeletedId ? 'Deleting...' : 'Delete'}
         </button>
       </p>
     </div>

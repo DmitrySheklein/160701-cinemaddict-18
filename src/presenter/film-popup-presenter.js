@@ -61,14 +61,15 @@ export default class FilmPopupPresenter {
   setSaving = () => {
     this.#filmPopup.updateElement({
       isDisabled: true,
-      isSaving: true,
+      isSending: true,
     });
   };
 
-  setDeleting = () => {
+  setDeleting = (deletedCommentId) => {
     this.#filmPopup.updateElement({
       isDisabled: true,
       isDeleting: true,
+      deletedCommentId,
     });
   };
 
@@ -76,8 +77,9 @@ export default class FilmPopupPresenter {
     const resetFormState = () => {
       this.#filmPopup.updateElement({
         isDisabled: false,
-        isSaving: false,
+        isSending: false,
         isDeleting: false,
+        deletedCommentId: '',
       });
     };
     this.#filmPopup.shake(resetFormState);
@@ -105,9 +107,9 @@ export default class FilmPopupPresenter {
     });
   };
 
-  #onCommentBtnRemoveClick = (commentId) => {
+  #onCommentBtnRemoveClick = (deletedCommentId) => {
     this.#changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, {
-      commentId,
+      deletedCommentId,
       filmId: this.#film.id,
     });
   };

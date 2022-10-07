@@ -66,15 +66,15 @@ export default class CommentsModel extends Observable {
     }
   };
 
-  deleteComment = async (updateType, { commentId, filmId }) => {
+  deleteComment = async (updateType, { deletedCommentId, filmId }) => {
     try {
-      await this.#commentsApiService.deleteComment(commentId);
+      await this.#commentsApiService.deleteComment(deletedCommentId);
 
       this.#allComments = this.#allComments.map((el) => {
         if (el.id === filmId) {
           return {
             ...el,
-            comments: el.comments.filter((comment) => comment.id !== commentId),
+            comments: el.comments.filter((comment) => comment.id !== deletedCommentId),
           };
         }
         return el;
@@ -83,7 +83,7 @@ export default class CommentsModel extends Observable {
       if (film) {
         const newFilm = {
           ...film,
-          comments: film.comments.filter((id) => id !== commentId),
+          comments: film.comments.filter((id) => id !== deletedCommentId),
         };
         this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm);
       }

@@ -29,6 +29,7 @@ export default class FilmsPopup extends AbstractStatefulView {
     comments,
     newComment,
     scrollPosition,
+    deletedCommentId: '',
     isDisabled: false,
     isSending: false,
     isDeleting: false,
@@ -37,6 +38,7 @@ export default class FilmsPopup extends AbstractStatefulView {
   static parseStateToData = (state) => {
     const newState = { ...state };
 
+    delete newState.deletedCommentId;
     delete newState.isDisabled;
     delete newState.isSending;
     delete newState.isDeleting;
@@ -75,6 +77,7 @@ export default class FilmsPopup extends AbstractStatefulView {
   #commentsFormSubmitHandler = (evt) => {
     if (isSubmit(evt) || isCtrlEnter(evt)) {
       evt.preventDefault();
+      this.#updateViewData();
       this._callback.commentsFormSubmit(FilmsPopup.parseStateToData(this._state).newComment);
     }
   };
@@ -99,6 +102,7 @@ export default class FilmsPopup extends AbstractStatefulView {
     const removedId = evt.target.closest('[data-id]')?.dataset.id;
 
     if (removedId) {
+      this.#updateViewData();
       this._callback.removeBtnClick(removedId);
     }
   };
