@@ -15,8 +15,8 @@ export default class NavigationPresenter {
     this.#navigationModel = navigationModel;
     this.#filmsModel = filmsModel;
 
-    this.#navigationModel.addObserver(this.#hanlerModelEvent);
-    this.#filmsModel.addObserver(this.#hanlerModelEvent);
+    this.#navigationModel.addObserver(this.#handleModelEvent);
+    this.#filmsModel.addObserver(this.#handleModelEvent);
   }
 
   get navigations() {
@@ -67,7 +67,7 @@ export default class NavigationPresenter {
     remove(prevNavComponent);
   };
 
-  #hanlerModelEvent = () => {
+  #handleModelEvent = () => {
     this.init();
   };
 
