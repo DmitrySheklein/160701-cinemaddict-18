@@ -5,6 +5,7 @@ import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
 import { UserAction, UpdateType } from '../main-const';
 
 export default class FilmPopupPresenter {
+  static name = 'popup';
   #siteBodyElement = document.body;
   #bodyHiddenClass = 'hide-overflow';
   #filmPopup = null;
@@ -150,7 +151,11 @@ export default class FilmPopupPresenter {
         favorite: !this.#film.userDetails.favorite,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmPopupPresenter.name,
+    });
   };
 
   #onWatchListBtnClick = () => {
@@ -161,7 +166,10 @@ export default class FilmPopupPresenter {
         watchlist: !this.#film.userDetails.watchlist,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmPopupPresenter.name,
+    });
   };
 
   #onWatchedBtnClick = () => {
@@ -172,7 +180,10 @@ export default class FilmPopupPresenter {
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmPopupPresenter.name,
+    });
   };
 
   #removePopup = () => {

@@ -3,6 +3,7 @@ import FilmsCard from '../view/film-card';
 import { UserAction, UpdateType } from '../main-const';
 
 export default class FilmCardPresenter {
+  static name = 'card';
   #container = null;
   #film = null;
   #filmComponent = null;
@@ -53,7 +54,10 @@ export default class FilmCardPresenter {
         favorite: !this.#film.userDetails.favorite,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmCardPresenter.name,
+    });
   };
 
   #onWatchListBtnClick = () => {
@@ -65,7 +69,10 @@ export default class FilmCardPresenter {
       },
     };
 
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmCardPresenter.name,
+    });
   };
 
   #onWatchedBtnClick = () => {
@@ -76,7 +83,10 @@ export default class FilmCardPresenter {
         alreadyWatched: !this.#film.userDetails.alreadyWatched,
       },
     };
-    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, { updatedFilm });
+    this.#changeData(UserAction.UPDATE_FILM, UpdateType.PATCH, {
+      updatedFilm,
+      from: FilmCardPresenter.name,
+    });
   };
 
   #onFilmCardClick = (film) => {

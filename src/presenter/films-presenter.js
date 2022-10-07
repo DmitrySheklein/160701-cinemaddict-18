@@ -189,17 +189,22 @@ export default class FilmsPresenter {
 
   #handleViewAction = async (actionType, updateType, data) => {
     this.#uiBlocker.block();
-    const { updatedFilm, newCommentPart, deletedCommentId, filmId } = data;
+    const { from, updatedFilm, newCommentPart, deletedCommentId, filmId } = data;
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         try {
           await this.#filmsModel.updateFilm(updateType, updatedFilm);
         } catch (error) {
-          if (this.#filmPopupPresenter?.currentFilm) {
-            this.#filmPopupPresenter.setAborting(actionType);
+          switch (from) {
+            case FilmCardPresenter.name:
+              this.#filmPresenter.get(updatedFilm.id).setAborting();
+              break;
+            case FilmPopupPresenter.name:
+              if (this.#filmPopupPresenter?.currentFilm) {
+                this.#filmPopupPresenter.setAborting(actionType);
+              }
           }
-          this.#filmPresenter.get(updatedFilm.id).setAborting();
         }
         break;
       case UserAction.DELETE_COMMENT:
