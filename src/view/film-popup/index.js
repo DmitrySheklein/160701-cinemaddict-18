@@ -19,6 +19,20 @@ export default class FilmsPopup extends AbstractStatefulView {
     return createFilmsPopupTemplate(this._state);
   }
 
+  get controlBlockElement() {
+    return this.element.querySelector('.film-details__controls');
+  }
+
+  get deletedCommentElement() {
+    return this.element.querySelector(
+      `.film-details__comment[data-id="${this._state.deletedCommentId}"]`,
+    );
+  }
+
+  get commentFormElement() {
+    return this.element.querySelector('form.film-details__new-comment');
+  }
+
   static parseDataToState = (
     film,
     comments,

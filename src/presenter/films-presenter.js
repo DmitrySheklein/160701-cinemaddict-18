@@ -193,14 +193,18 @@ export default class FilmsPresenter {
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this.#filmsModel.updateFilm(updateType, updatedFilm);
+        try {
+          await this.#filmsModel.updateFilm(updateType, updatedFilm);
+        } catch (error) {
+          this.#filmPopupPresenter.setAborting(actionType);
+        }
         break;
       case UserAction.DELETE_COMMENT:
         this.#filmPopupPresenter.setDeleting(deletedCommentId);
         try {
           await this.#commentsModel.deleteComment(updateType, { deletedCommentId, filmId });
         } catch (error) {
-          this.#filmPopupPresenter.setAborting();
+          this.#filmPopupPresenter.setAborting(actionType);
         }
 
         break;
@@ -209,7 +213,7 @@ export default class FilmsPresenter {
         try {
           await this.#commentsModel.addComment(updateType, { newCommentPart, filmId });
         } catch (error) {
-          this.#filmPopupPresenter.setAborting();
+          this.#filmPopupPresenter.setAborting(actionType);
         }
 
         break;

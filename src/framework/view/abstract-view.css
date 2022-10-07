@@ -1,6 +1,5 @@
 .shake {
   animation: shake 0.6s;
-  position: relative;
   z-index: 10;
 }
 

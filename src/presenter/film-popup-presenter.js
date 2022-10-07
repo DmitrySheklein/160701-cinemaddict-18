@@ -73,7 +73,19 @@ export default class FilmPopupPresenter {
     });
   };
 
-  setAborting = () => {
+  setAborting = (type) => {
+    let shakedElement;
+    switch (type) {
+      case UserAction.ADD_COMMENT:
+        shakedElement = this.#filmPopup.commentFormElement;
+        break;
+      case UserAction.DELETE_COMMENT:
+        shakedElement = this.#filmPopup.deletedCommentElement;
+        break;
+      case UserAction.UPDATE_FILM:
+        shakedElement = this.#filmPopup.controlBlockElement;
+        break;
+    }
     const resetFormState = () => {
       this.#filmPopup.updateElement({
         isDisabled: false,
@@ -82,7 +94,12 @@ export default class FilmPopupPresenter {
         deletedCommentId: '',
       });
     };
-    this.#filmPopup.shake(resetFormState);
+    this.#filmPopup.shake.call(
+      {
+        element: shakedElement,
+      },
+      resetFormState,
+    );
   };
 
   #checkClearComments = (popupComponent, currentFilm) => {
