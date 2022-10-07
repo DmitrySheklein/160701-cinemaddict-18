@@ -51,6 +51,10 @@ export default class FilmPopupPresenter {
     }
 
     if (this.#siteBodyElement.contains(prevPopupComponent.element)) {
+      this.#updateViewData({
+        ...DEFAULT_VIEW_POPUP_DATA,
+        newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
+      });
       replace(this.#filmPopup, prevPopupComponent);
       this.#filmPopup.setScrollPosition();
     }
