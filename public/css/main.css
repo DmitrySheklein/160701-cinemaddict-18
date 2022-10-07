@@ -437,9 +437,9 @@ button {
 }
 
 .film-details {
-  /* width: 70vw; */
   position: fixed;
-  height: 100vh;
+  /* height: 100vh; */
+  bottom: 0;
   top: 0;
   right: 0;
   z-index: 1;
