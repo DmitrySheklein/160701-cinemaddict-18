@@ -24,6 +24,15 @@ export default class FilmPopupPresenter {
     return this.#film;
   }
 
+  saveState = () => {
+    const scrollValue = this.#filmPopup.scrollPositionElement;
+
+    this.#updateViewData({
+      ...this.#viewData,
+      scrollPosition: scrollValue,
+    });
+  };
+
   init = async (film) => {
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;

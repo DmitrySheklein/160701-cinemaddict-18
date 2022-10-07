@@ -73,6 +73,10 @@ export default class FilmsPopup extends AbstractStatefulView {
     });
   };
 
+  get scrollPositionElement() {
+    return this.element.scrollTop;
+  }
+
   setScrollPosition = () => {
     this.element.scrollTop = this._state.scrollPosition;
   };

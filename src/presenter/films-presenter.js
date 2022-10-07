@@ -190,10 +190,14 @@ export default class FilmsPresenter {
   #handleViewAction = async (actionType, updateType, data) => {
     this.#uiBlocker.block();
     const { from, updatedFilm, newCommentPart, deletedCommentId, filmId } = data;
+    const isPopupOpen = this.#filmPopupPresenter?.currentFilm;
 
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         try {
+          if (isPopupOpen) {
+            this.#filmPopupPresenter.saveState();
+          }
           await this.#filmsModel.updateFilm(updateType, updatedFilm);
         } catch (error) {
           switch (from) {
@@ -201,7 +205,7 @@ export default class FilmsPresenter {
               this.#filmPresenter.get(updatedFilm.id).setAborting();
               break;
             case FilmPopupPresenter.name:
-              if (this.#filmPopupPresenter?.currentFilm) {
+              if (isPopupOpen) {
                 this.#filmPopupPresenter.setAborting(actionType);
               }
           }
