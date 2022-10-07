@@ -25,26 +25,27 @@ export default class FilmsModel extends Observable {
     return this.#films;
   }
 
-  updateFilm = async (updateType, update) => {
-    const index = this.#films.findIndex((item) => item.id === update.id);
+  updateFilm = async (updateType, updateFilm, isLocalUpdate = false) => {
+    const index = this.#films.findIndex((item) => item.id === updateFilm.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting film');
     }
 
     try {
-      const responce = await this.#filmsApiService.updateFilm(update);
-      const updatedFilm = this.#adaptToClient(responce);
+      let updatedFilm = null;
+
+      if (isLocalUpdate) {
+        updatedFilm = this.#adaptToClient(updateFilm);
+      } else {
+        const response = await this.#filmsApiService.updateFilm(updateFilm);
+        updatedFilm = this.#adaptToClient(response);
+      }
       this.#films = [...this.#films.slice(0, index), updatedFilm, ...this.#films.slice(index + 1)];
       this._notify(updateType, updatedFilm);
     } catch (error) {
       throw new Error('Can\'t update film');
     }
-  };
-
-  createFilms = (updateType, update) => {
-    this.#films = [...update];
-    this._notify(updateType, update);
   };
 
   #adaptToClient = (film) => {
