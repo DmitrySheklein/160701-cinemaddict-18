@@ -196,7 +196,10 @@ export default class FilmsPresenter {
         try {
           await this.#filmsModel.updateFilm(updateType, updatedFilm);
         } catch (error) {
-          this.#filmPopupPresenter.setAborting(actionType);
+          if (this.#filmPopupPresenter?.currentFilm) {
+            this.#filmPopupPresenter.setAborting(actionType);
+          }
+          this.#filmPresenter.get(updatedFilm.id).setAborting();
         }
         break;
       case UserAction.DELETE_COMMENT:

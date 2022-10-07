@@ -37,6 +37,14 @@ export default class FilmCardPresenter {
     remove(prevFilmComponent);
   };
 
+  setAborting() {
+    const shakedElement = this.#filmComponent.controlBlockElement;
+
+    this.#filmComponent.shake.call({
+      element: shakedElement,
+    });
+  }
+
   #onFavoriteBtnClick = () => {
     const updatedFilm = {
       ...this.#film,
