@@ -59,8 +59,8 @@ export default class CommentsModel extends Observable {
         }
         return el;
       });
+      this._notify(updateType, { newComments: comments });
       this.#filmsModel.updateFilm(UpdateType.PATCH, movie, true);
-      this._notify(updateType, comments);
     } catch (error) {
       throw new Error('Can\'t add comment');
     }

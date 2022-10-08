@@ -10,6 +10,7 @@ export default class FilmPopupPresenter {
   #bodyHiddenClass = 'hide-overflow';
   #filmPopup = null;
   #commentsModel = null;
+  #currentComments = [];
   #changeData = null;
   #film = null;
 
@@ -18,6 +19,8 @@ export default class FilmPopupPresenter {
   constructor(commentsModel, changeData) {
     this.#commentsModel = commentsModel;
     this.#changeData = changeData;
+
+    this.#commentsModel.addObserver(this.#handleModelEvent);
   }
 
   get currentFilm() {
@@ -37,10 +40,10 @@ export default class FilmPopupPresenter {
     this.#film = film;
     const prevPopupComponent = this.#filmPopup;
     this.#checkClearComments(prevPopupComponent, this.#film);
-    const comments = await this.#commentsModel.get(this.#film);
+    this.#currentComments = await this.#commentsModel.get(this.#film);
     this.#filmPopup = new FilmsPopup(
       this.#film,
-      comments,
+      this.#currentComments,
       this.#viewData.newComment,
       this.#viewData.scrollPosition,
       this.#updateViewData,
@@ -61,10 +64,6 @@ export default class FilmPopupPresenter {
     }
 
     if (this.#siteBodyElement.contains(prevPopupComponent.element)) {
-      this.#updateViewData({
-        ...DEFAULT_VIEW_POPUP_DATA,
-        newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
-      });
       replace(this.#filmPopup, prevPopupComponent);
       this.#filmPopup.setScrollPosition();
     }
@@ -114,6 +113,20 @@ export default class FilmPopupPresenter {
       },
       resetFormState,
     );
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    const { newComments } = data;
+
+    switch (updateType) {
+      case UpdateType.PATCH:
+        if (this.#currentComments.length < newComments.length) {
+          this.#updateViewData({
+            ...this.#viewData,
+            newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
+          });
+        }
+    }
   };
 
   #checkClearComments = (popupComponent, currentFilm) => {
@@ -201,6 +214,7 @@ export default class FilmPopupPresenter {
       remove(this.#filmPopup);
       this.#filmPopup = null;
       this.#film = null;
+      this.#currentComments = null;
     }
     document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
