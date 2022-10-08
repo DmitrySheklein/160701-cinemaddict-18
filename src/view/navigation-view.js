@@ -45,10 +45,10 @@ export default class NavigationView extends AbstractView {
 
   setNavItemClick = (callback) => {
     this._callback.click = callback;
-    this.element.addEventListener('click', this.#navItemClick);
+    this.element.addEventListener('click', this.#navItemClickHandler);
   };
 
-  #navItemClick = (evt) => {
+  #navItemClickHandler = (evt) => {
     evt.preventDefault();
     const el = evt.target.closest('a');
 

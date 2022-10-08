@@ -55,7 +55,7 @@ export default class FilmPopupPresenter {
     this.#filmPopup.setFavoriteClickHandler(this.#onFavoriteBtnClick);
     this.#filmPopup.setWatchListClickHandler(this.#onWatchListBtnClick);
     this.#filmPopup.setWatchedClickHandler(this.#onWatchedBtnClick);
-    document.addEventListener('keydown', this.#onEscKeyDown);
+    document.addEventListener('keydown', this.#documentEscHandler);
 
     if (prevPopupComponent === null) {
       render(this.#filmPopup, this.#siteBodyElement);
@@ -159,7 +159,7 @@ export default class FilmPopupPresenter {
     });
   };
 
-  #onEscKeyDown = (evt) => {
+  #documentEscHandler = (evt) => {
     if (isEsc(evt)) {
       evt.preventDefault();
       this.#removePopup();
@@ -217,7 +217,7 @@ export default class FilmPopupPresenter {
       this.#film = null;
       this.#currentComments = null;
     }
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#documentEscHandler);
     this.#updateViewData(DEFAULT_VIEW_POPUP_DATA);
   };
 }
