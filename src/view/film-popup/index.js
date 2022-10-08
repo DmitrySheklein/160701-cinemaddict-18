@@ -63,7 +63,7 @@ export default class FilmsPopup extends AbstractStatefulView {
 
   #updateViewData = () => {
     const scrollValue = this.element.scrollTop;
-    console.log(scrollValue);
+
     this._setState({
       scrollPosition: scrollValue,
     });
@@ -107,9 +107,6 @@ export default class FilmsPopup extends AbstractStatefulView {
     this.element
       .querySelectorAll('.film-details__emoji-item[type="radio"]')
       .forEach((input) => input.addEventListener('change', this.#emotionsInputHandler));
-    this.element.addEventListener('scroll', (evt) => {
-      console.log(evt.target.scrollTop);
-    });
   };
 
   setCommentRemoveHandler = (callback) => {
