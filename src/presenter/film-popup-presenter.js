@@ -115,16 +115,17 @@ export default class FilmPopupPresenter {
     );
   };
 
-  #handleModelEvent = (updateType, data) => {
+  #handleModelEvent = (updateType, data = {}) => {
     const { newComments } = data;
-
     switch (updateType) {
       case UpdateType.PATCH:
-        if (this.#currentComments.length < newComments.length) {
-          this.#updateViewData({
-            ...this.#viewData,
-            newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
-          });
+        if (newComments) {
+          if (this.#currentComments.length < newComments.length) {
+            this.#updateViewData({
+              ...this.#viewData,
+              newComment: DEFAULT_VIEW_POPUP_DATA.newComment,
+            });
+          }
         }
     }
   };
