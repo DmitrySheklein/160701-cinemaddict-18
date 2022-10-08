@@ -35,8 +35,8 @@ const createFilmsPopupTemplate = (state) => {
 
             <ul class="film-details__comments-list">
 ${comments
-  .map((comment) => createComment(comment, { isDeleting, isDisabled, deletedCommentId }))
-  .join('')}
+    .map((comment) => createComment(comment, { isDeleting, isDisabled, deletedCommentId }))
+    .join('')}
             </ul>
 
               ${createCommentForm(newComment, { isDisabled, isSending })}
