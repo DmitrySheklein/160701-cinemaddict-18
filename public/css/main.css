@@ -597,13 +597,17 @@ button {
   margin: 0 auto;
   border-top: 1px solid #31353f;
   border-bottom: 1px solid #31353f;
-  padding: 22px 50px;
+
   display: flex;
 }
 .film-details__control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   padding-right: 42px;
   width: 360px;
+  padding: 22px 50px;
   font-size: 21px;
   background-color: transparent;
   border: none;
@@ -618,12 +622,13 @@ button {
 }
 .film-details__control-button::before {
   content: '';
+  position: relative;
   width: 17px;
   height: 17px;
-  position: absolute;
-  top: 3px;
-  left: 40px;
+  display: block;
+  margin-right: 15px;
   background-color: transparent;
+  background-position: center;
 }
 .film-details__control-button--watchlist::before {
   background: url('../images/icons/icon-watchlist.svg') no-repeat;
@@ -632,7 +637,7 @@ button {
 .film-details__control-button--watched::before {
   background: url('../images/icons/icon-watched.svg') no-repeat;
   background-size: 17px 10px;
-  top: 7px;
+  top: 4px;
 }
 .film-details__control-button--favorite::before {
   background: url('../images/icons/icon-favorite.svg') no-repeat;
@@ -695,6 +700,7 @@ button {
 .film-details__emoji-label:hover {
   opacity: 1;
 }
+.film-details__emoji-item:focus + .film-details__emoji-label,
 .film-details__emoji-item:checked + .film-details__emoji-label {
   opacity: 1;
 }
@@ -780,6 +786,7 @@ button {
 .film-details__comment-input::placeholder {
   color: #212126;
 }
+.film-details__submit-btn:focus,
 .film-details__submit-btn:hover {
   opacity: 0.9;
 }
