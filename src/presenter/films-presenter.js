@@ -14,6 +14,7 @@ import { NavigationFilter } from '../main-const';
 import LoadingView from '../view/loading-view';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import FilmsRatedPresenter from './films-rated-presenter';
+import FilmsCommentedPresenter from './films-commented-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
 const TimeLimit = {
@@ -41,6 +42,7 @@ export default class FilmsPresenter {
   #navigationType = NavigationType.ALL.id;
   #filmPopupPresenter = null;
   #filmsRatedPresenter = null;
+  #filmsCommentedPresenter = null;
   #navigationPresenter = null;
   #isLoading = true;
   #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
@@ -58,6 +60,14 @@ export default class FilmsPresenter {
       this.#filmsContainer.element,
       this.#filmPresenter,
       this.#filmsModel,
+      this.#filmPopupPresenter,
+      this.#handleViewAction,
+    );
+    this.#filmsCommentedPresenter = new FilmsCommentedPresenter(
+      this.#filmsContainer.element,
+      this.#filmPresenter,
+      this.#filmsModel,
+      this.#commentsModel,
       this.#filmPopupPresenter,
       this.#handleViewAction,
     );
@@ -112,6 +122,7 @@ export default class FilmsPresenter {
     }
 
     this.#filmsRatedPresenter.init();
+    this.#filmsCommentedPresenter.init();
   };
 
   #renderFilms = (films) => films.forEach(this.#renderFilm);

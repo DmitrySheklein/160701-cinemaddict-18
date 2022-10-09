@@ -33,5 +33,18 @@ const sortFilmsRating = (filmA, filmB) => {
 
   return 0;
 };
+const sortFilmsComments = (filmA, filmB) => {
+  const commentsCountA = Number(filmA.comments.length);
+  const commentsCountB = Number(filmB.comments.length);
 
-export { sortFilmsDate, sortFilmsRating };
+  if (commentsCountA > commentsCountB) {
+    return -1;
+  }
+  if (commentsCountB > commentsCountA) {
+    return 1;
+  }
+
+  return 0;
+};
+
+export { sortFilmsDate, sortFilmsRating, sortFilmsComments };
