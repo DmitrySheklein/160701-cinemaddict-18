@@ -85,7 +85,7 @@ export default class CommentsModel extends Observable {
           ...film,
           comments: film.comments.filter((id) => id !== deletedCommentId),
         };
-        this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm);
+        this.#filmsModel.updateFilm(UpdateType.PATCH, newFilm, true);
       }
 
       this._notify(updateType);
