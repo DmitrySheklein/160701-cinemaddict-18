@@ -33,7 +33,9 @@ export default class FilmsRatedPresenter {
     if (!someFilmWithRating) {
       return;
     }
-    const sortedFilms = [...films].sort(sortFilmsRating);
+    const sortedFilms = [...films]
+      .sort(sortFilmsRating)
+      .filter((film) => film.filmInfo.totalRating);
 
     render(this.#filmsListSection, this.#mainContainer);
     render(this.#filmsListTitle, this.#filmsListSection.element);
