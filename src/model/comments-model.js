@@ -38,7 +38,7 @@ export default class CommentsModel extends Observable {
 
       return adaptedComments;
     } catch (error) {
-      throw new Error('Can\'t load film comments');
+      throw new Error('Can not load film comments');
     }
   };
 
@@ -62,7 +62,7 @@ export default class CommentsModel extends Observable {
       this._notify(updateType, { newComments: comments });
       this.#filmsModel.updateFilm(UpdateType.PATCH, movie, true);
     } catch (error) {
-      throw new Error('Can\'t add comment');
+      throw new Error('Can not add comment');
     }
   };
 
@@ -90,7 +90,7 @@ export default class CommentsModel extends Observable {
 
       this._notify(updateType);
     } catch (error) {
-      throw new Error('Can\'t delete comment');
+      throw new Error('Can not delete comment');
     }
   };
 
