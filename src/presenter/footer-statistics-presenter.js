@@ -1,5 +1,5 @@
-import { render } from '../framework/render';
-import FooterStatisticsView from '../view/footer-statistics-view';
+import { render } from 'src/framework/render';
+import FooterStatisticsView from 'src/view/footer-statistics-view';
 
 export default class FooterStatisticsPresenter {
   #container = null;

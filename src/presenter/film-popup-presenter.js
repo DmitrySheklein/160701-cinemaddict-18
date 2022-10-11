@@ -1,8 +1,8 @@
-import { render, remove, replace } from '../framework/render';
-import FilmsPopup from '../view/film-popup';
-import { isEsc } from '../utils';
-import { DEFAULT_VIEW_POPUP_DATA } from '../main-const';
-import { UserAction, UpdateType } from '../main-const';
+import { render, remove, replace } from 'src/framework/render';
+import FilmsPopup from 'src/view/film-popup';
+import { isEsc } from 'src/utils';
+import { DEFAULT_VIEW_POPUP_DATA } from 'src/main-const';
+import { UserAction, UpdateType } from 'src/main-const';
 
 export default class FilmPopupPresenter {
   static name = 'popup';

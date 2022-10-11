@@ -1,7 +1,7 @@
-import { remove, render, replace } from '../framework/render';
-import { getUserStatus } from '../utils/';
-import ProfileView from '../view/profile-view';
-import { UpdateType } from '../main-const';
+import { remove, render, replace } from 'src/framework/render';
+import { getUserStatus } from 'src/utils/';
+import ProfileView from 'src/view/profile-view';
+import { UpdateType } from 'src/main-const';
 export default class HeaderProfilePresenter {
   #container = null;
   #headerProfileComponent = null;

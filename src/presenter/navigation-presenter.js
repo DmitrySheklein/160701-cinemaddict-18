@@ -1,7 +1,7 @@
-import { remove, render, replace } from '../framework/render';
-import { NavigationType, UpdateType } from '../main-const';
-import { NavigationFilter } from '../main-const';
-import NavigationView from '../view/navigation-view';
+import { remove, render, replace } from 'src/framework/render';
+import { NavigationType, UpdateType } from 'src/main-const';
+import { NavigationFilter } from 'src/main-const';
+import NavigationView from 'src/view/navigation-view';
 
 export default class NavigationPresenter {
   #navigationContainer = null;

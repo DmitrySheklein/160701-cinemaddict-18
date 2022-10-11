@@ -1,6 +1,6 @@
-import { render, remove, replace } from '../framework/render';
-import FilmsCard from '../view/film-card';
-import { UserAction, UpdateType } from '../main-const';
+import { render, remove, replace } from 'src/framework/render';
+import FilmsCard from 'src/view/film-card';
+import { UserAction, UpdateType } from 'src/main-const';
 
 export default class FilmCardPresenter {
   static name = 'card';
