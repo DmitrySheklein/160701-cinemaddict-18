@@ -1,4 +1,4 @@
-import FilmsPresenter from './presenter/films-presenter';
+import FilmsPresenter from './presenter/films/films-presenter';
 import NavigationPresenter from './presenter/navigation-presenter';
 import FilmsModel from './model/films-model';
 import CommentsModel from './model/comments-model';

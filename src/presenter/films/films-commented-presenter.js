@@ -1,10 +1,10 @@
-import { render, remove } from '../framework/render';
-import FilmsListTitle from '../view/films-list/films-list-title-view';
-import FilmsListSection from '../view/films-list/films-list-section-view';
-import FilmsListContainer from '../view/films-list/films-list-container-view';
-import FilmCardPresenter from './film-card-presenter';
-import { sortFilmsComments } from '../utils/sort';
-import { UpdateType } from '../main-const';
+import { render, remove } from 'src/framework/render';
+import FilmsListTitle from 'src/view/films-list/films-list-title-view';
+import FilmsListSection from 'src/view/films-list/films-list-section-view';
+import FilmsListContainer from 'src/view/films-list/films-list-container-view';
+import FilmCardPresenter from 'src/presenter/film-card-presenter';
+import { sortFilmsComments } from 'src/utils/sort';
+import { UpdateType } from 'src/main-const';
 const FILM_COUNT_PER_STEP = 2;
 
 export default class FilmsCommentedPresenter {

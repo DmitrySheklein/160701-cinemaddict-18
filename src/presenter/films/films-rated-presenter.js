@@ -1,9 +1,9 @@
-import { render } from '../framework/render';
-import FilmsListTitle from '../view/films-list/films-list-title-view';
-import FilmsListSection from '../view/films-list/films-list-section-view';
-import FilmsListContainer from '../view/films-list/films-list-container-view';
-import FilmCardPresenter from './film-card-presenter';
-import { sortFilmsRating } from '../utils/sort';
+import { render } from 'src/framework/render';
+import FilmsListTitle from '../../view/films-list/films-list-title-view';
+import FilmsListSection from '../../view/films-list/films-list-section-view';
+import FilmsListContainer from '../../view/films-list/films-list-container-view';
+import FilmCardPresenter from '../film-card-presenter';
+import { sortFilmsRating } from '../../utils/sort';
 
 const FILM_COUNT_PER_STEP = 2;
 
