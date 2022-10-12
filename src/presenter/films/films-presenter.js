@@ -13,7 +13,7 @@ import FilmPopupPresenter from 'src/presenter/film-popup-presenter';
 import { NavigationFilter } from 'src/main-const';
 import LoadingView from 'src/view/loading-view';
 import UiBlocker from 'src/framework/ui-blocker/ui-blocker';
-import FilmsRatedPresenter from './films-rated-presenter';
+import FilmsRatedPresenter from './films-rated-presenter-old';
 import FilmsCommentedPresenter from './films-commented-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -56,21 +56,21 @@ export default class FilmsPresenter {
     this.#navigationPresenter = navigationPresenter;
     this.#navigationModel.addObserver(this.#handleModelEvent);
     this.#filmPopupPresenter = new FilmPopupPresenter(this.#commentsModel, this.#handleViewAction);
-    this.#filmsRatedPresenter = new FilmsRatedPresenter(
-      this.#filmsContainer.element,
-      this.#filmPresenter,
-      this.#filmsModel,
-      this.#filmPopupPresenter,
-      this.#handleViewAction,
-    );
-    this.#filmsCommentedPresenter = new FilmsCommentedPresenter(
-      this.#filmsContainer.element,
-      this.#filmPresenter,
-      this.#filmsModel,
-      this.#commentsModel,
-      this.#filmPopupPresenter,
-      this.#handleViewAction,
-    );
+    // this.#filmsRatedPresenter = new FilmsRatedPresenter(
+    //   this.#filmsContainer.element,
+    //   this.#filmPresenter,
+    //   this.#filmsModel,
+    //   this.#filmPopupPresenter,
+    //   this.#handleViewAction,
+    // );
+    // this.#filmsCommentedPresenter = new FilmsCommentedPresenter(
+    //   this.#filmsContainer.element,
+    //   this.#filmPresenter,
+    //   this.#filmsModel,
+    //   this.#commentsModel,
+    //   this.#filmPopupPresenter,
+    //   this.#handleViewAction,
+    // );
   }
 
   get films() {
@@ -121,8 +121,8 @@ export default class FilmsPresenter {
       this.#renderShowMoreBtn();
     }
 
-    this.#filmsRatedPresenter.init();
-    this.#filmsCommentedPresenter.init();
+    // this.#filmsRatedPresenter.init();
+    // this.#filmsCommentedPresenter.init();
   };
 
   #renderFilms = (films) => films.forEach(this.#renderFilm);
