@@ -13,12 +13,12 @@ const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = document.querySelector('.header');
 const siteFooterElement = document.querySelector('.footer');
 
-const filmsModel = new FilmsModel(new FilmsApiService(END_POINT, AUTHORIZATION));
+const filmsApiService = new FilmsApiService(END_POINT, AUTHORIZATION);
+const commentsApiService = new CommentsApiService(END_POINT, AUTHORIZATION);
+
+const filmsModel = new FilmsModel(filmsApiService);
+const commentsModel = new CommentsModel(filmsModel, commentsApiService);
 const navigationModel = new NavigationModel();
-const commentsModel = new CommentsModel(
-  filmsModel,
-  new CommentsApiService(END_POINT, AUTHORIZATION),
-);
 const navigationPresenter = new NavigationPresenter(siteMainElement, navigationModel, filmsModel);
 const filmsPresenter = new FilmsPresenter(
   siteMainElement,
